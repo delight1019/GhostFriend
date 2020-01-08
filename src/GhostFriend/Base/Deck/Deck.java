@@ -15,9 +15,10 @@ public class Deck {
 
         for (CardSuit suit: CardSuit.values()) {
             for (CardValue value: CardValue.values()) {
-                Card card = new Card(suit, value);
-
-                cardList.add(card);
+                if (Card.IsValidCard(suit, value)) {
+                    Card card = new Card(suit, value);
+                    cardList.add(card);
+                }
             }
         }
 

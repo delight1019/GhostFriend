@@ -12,6 +12,18 @@ public class Card {
         return this.value;
     }
 
+    public static Boolean IsValidCard(CardSuit suit, CardValue value) {
+        if ((suit == CardSuit.JOKER) && (value != CardValue.JOKER)) {
+            return false;
+        }
+        else if ((suit != CardSuit.JOKER) && (value == CardValue.JOKER)) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
     public Card(CardSuit suit, CardValue value) {
         this.suit = suit;
         this.value = value;
