@@ -6,6 +6,7 @@ import GhostFriend.Base.Card.CardValue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Deck {
     private List<Card> cardList;
@@ -23,6 +24,15 @@ public class Deck {
         }
 
         return cardList;
+    }
+
+    public Card DrawCard() {
+        Random random = new Random();
+        int selectedIndex = random.nextInt(cardList.size());
+        Card DrawnCard = cardList.get(selectedIndex);
+        cardList.remove(selectedIndex);
+
+        return DrawnCard;
     }
 
     public Deck() {
