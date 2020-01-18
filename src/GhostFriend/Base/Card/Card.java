@@ -11,6 +11,11 @@ public class Card {
         return this.value;
     }
 
+    @Override
+    public String toString() {
+        return getCardSuit() + " " + getCardValue();
+    }
+
     public Boolean IsScoreCard() {
         if ((this.getCardValue() == CardValue.ACE) ||
                 (this.getCardValue() == CardValue.TEN) ||

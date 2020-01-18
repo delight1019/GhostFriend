@@ -1,5 +1,6 @@
 package GhostFriend.Base.Game;
 
+import GhostFriend.Base.Deck.Deck;
 import GhostFriend.Base.IOController.IOController;
 import GhostFriend.Base.Player.Player;
 import GhostFriend.Base.Rule.Rule;
@@ -8,18 +9,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    private Rule Rule;
-    private List<Player> Players;
+    private Rule rule;
+    private Deck deck;
+    private List<Player> players;
 
     public void StartPlaying(int numOfPlayers) {
         IOController.startGame();
 
-        Rule = new Rule();
-        Players = new ArrayList<>();
+        rule = new Rule();
+        deck = new Deck();
+        players = new ArrayList<>();
 
         for (int i = 0; i < numOfPlayers; i++) {
-            Players.add(new Player("Player" + (i + 1)));
-            IOController.JoinPlayer(Players.get(i).getName());
+            players.add(new Player("Player" + (i + 1)));
+            IOController.joinPlayer(players.get(i).getName());
+        }
+
+        IOController.handCardsOut();
+
+        for (int i = 0; i < numOfPlayers; i++) {
+            for (int j = 0; j < Rule.getNumOfCardsPerPerson(); j++) {
+                players.get(i).receiveCard(deck.DrawCard());
+            }
+        }
+
+        for (int i = 0; i < numOfPlayers; i++) {
+            IOController.checkCards(players.get(i));
         }
     }
 }

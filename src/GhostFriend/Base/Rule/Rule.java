@@ -41,6 +41,10 @@ public class Rule {
         }
     }
 
+    public static Integer getNumOfCardsPerPerson() {
+        return 10; // To-Do: I'm only considering the case that 5 players come in
+    }
+
     public Rule() {
         this.Mighty = new Card(CardSuit.SPADE, CardValue.ACE);
         this.JokerCall = new Card(CardSuit.CLUB, CardValue.THREE);
