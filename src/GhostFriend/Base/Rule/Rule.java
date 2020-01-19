@@ -7,7 +7,7 @@ import GhostFriend.Base.Card.CardValue;
 public class Rule {
     private Card Mighty;
     private Card JokerCall;
-    private CardSuit Giru;
+    private Pledge pledge;
 
     public Card getMighty() {
         return Mighty;
@@ -25,14 +25,6 @@ public class Rule {
         JokerCall = jokerCall;
     }
 
-    public CardSuit getGiru() {
-        return Giru;
-    }
-
-    public void setGiru(CardSuit giru) {
-        Giru = giru;
-    }
-
     private Integer getScore(Card card) {
         if (card.IsScoreCard()) {
             return 1;
@@ -48,7 +40,7 @@ public class Rule {
     public Rule() {
         this.Mighty = new Card(CardSuit.SPADE, CardValue.ACE);
         this.JokerCall = new Card(CardSuit.CLUB, CardValue.THREE);
-        this.Giru = CardSuit.SPADE;
+        this.pledge = new Pledge();
     }
 
 }
