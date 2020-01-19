@@ -13,7 +13,15 @@ public class Card {
 
     @Override
     public String toString() {
-        return getCardSuit() + " " + getCardValue();
+        if (Card.IsValidCard(this)) {
+            if ((this.getCardSuit() == CardSuit.JOKER) && (this.getCardValue() == CardValue.JOKER)) {
+                return this.getCardSuit().toString();
+            }
+
+            return this.getCardSuit() + " " + this.getCardValue();
+        } else {
+            return "It's not valid card";
+        }
     }
 
     public Boolean IsScoreCard() {
@@ -39,6 +47,10 @@ public class Card {
         else {
             return true;
         }
+    }
+
+    public static Boolean IsValidCard(Card card) {
+        return Card.IsValidCard(card.getCardSuit(), card.getCardValue());
     }
 
     public Card(CardSuit suit, CardValue value) {
