@@ -7,7 +7,7 @@ import GhostFriend.Base.Card.CardValue;
 public class Rule {
     private Card Mighty;
     private Card JokerCall;
-    private Pledge pledge;
+    private Contract contract;
 
     public Card getMighty() {
         return Mighty;
@@ -40,7 +40,7 @@ public class Rule {
     public Rule() {
         this.Mighty = new Card(CardSuit.SPADE, CardValue.ACE);
         this.JokerCall = new Card(CardSuit.CLUB, CardValue.THREE);
-        this.pledge = new Pledge();
+        this.contract = new Contract();
     }
 
 }
