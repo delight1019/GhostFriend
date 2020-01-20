@@ -2,8 +2,13 @@ package GhostFriend.Base.IOController;
 
 import GhostFriend.Base.Card.Card;
 import GhostFriend.Base.Player.Player;
+import GhostFriend.Base.Rule.Contract;
+
+import java.util.Scanner;
 
 public class IOController {
+    public static Scanner scanner = new Scanner(System.in);
+
     public static void startGame() {
         System.out.println("=========== 게임을 시작합니다 ===========");
     }
@@ -19,5 +24,10 @@ public class IOController {
         for (Card card: player.getCardList()) {
             System.out.println(card.toString());
         }
+    }
+    public static void askBidding(Player player, Contract contract) {
+        System.out.println("현재 공약은 " + contract.toString());
+        System.out.println(player.getName() + " 공약을 선언하시겠습니까?");
+        System.out.println("기루 숫자 / PASS 형식으로 입력하세요. (ex. SPADE 5)");
     }
 }

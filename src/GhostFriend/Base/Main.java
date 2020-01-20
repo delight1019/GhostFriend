@@ -7,5 +7,6 @@ public class Main {
     public static void main(String[] args) {
         Game Game = new Game();
         Game.StartPlaying(5);
+        Game.determineDeclarer();
     }
 }
