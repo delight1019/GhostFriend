@@ -52,13 +52,21 @@ public class Game {
 
         while (!isDetermiend) {
             for (int i = 0; i < numOfPlayers; i++) {
-                IOController.askBidding(players.get(i), gameContract);
+                Player currentPlayer = players.get(i);
+
+                IOController.askBidding(currentPlayer, gameContract);
                 String userInput = IOController.scanner.nextLine();
 
-                if (userInput == "PASS") {
+                if (userInput.equals("PASS")) {
                     continue;
                 } else {
-                    // To do: 공약 선언에 대한 처리와 잘못된 입력이 들어왔을 경우에 대한 처리
+                    // To do: 잘못된 입력이 들어왔을 경우에 대한 처리
+
+                    currentPlayer.declareContract(IOController.parseContract(userInput));
+
+                    if (rule.IsValidContract(gameContract, currentPlayer.getContract())) {
+                        gameContract = currentPlayer.getContract();
+                    }
                 }
             }
         }

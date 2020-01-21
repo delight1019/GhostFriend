@@ -7,7 +7,7 @@ import GhostFriend.Base.Card.CardValue;
 public class Rule {
     private Card Mighty;
     private Card JokerCall;
-    private Contract contract;
+    private Integer minContractScore;
 
     public Card getMighty() {
         return Mighty;
@@ -37,10 +37,15 @@ public class Rule {
         return 10; // To-Do: I'm only considering the case that 5 players come in
     }
 
+    public Boolean IsValidContract(Contract currentContract, Contract newContract) {
+        return ((newContract.getScore() >= this.minContractScore) &&
+                (newContract.getScore() > currentContract.getScore()) && Contract.IsValidGiru(newContract));
+    }
+
     public Rule() {
         this.Mighty = new Card(CardSuit.SPADE, CardValue.ACE);
         this.JokerCall = new Card(CardSuit.CLUB, CardValue.THREE);
-        this.contract = new Contract();
+        this.minContractScore = 13;
     }
 
 }

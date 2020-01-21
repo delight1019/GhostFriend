@@ -1,6 +1,7 @@
 package GhostFriend.Base.IOController;
 
 import GhostFriend.Base.Card.Card;
+import GhostFriend.Base.Card.CardSuit;
 import GhostFriend.Base.Player.Player;
 import GhostFriend.Base.Rule.Contract;
 
@@ -29,5 +30,11 @@ public class IOController {
         System.out.println("현재 공약은 " + contract.toString());
         System.out.println(player.getName() + " 공약을 선언하시겠습니까?");
         System.out.println("기루 숫자 / PASS 형식으로 입력하세요. (ex. SPADE 5)");
+    }
+    public static Contract parseContract(String userInput) {
+        String[] contractArray = userInput.split(" ");
+        Contract contract = new Contract();
+        contract.declare(CardSuit.ConvertString(contractArray[0]), Integer.parseInt(contractArray[1]));
+        return contract;
     }
 }

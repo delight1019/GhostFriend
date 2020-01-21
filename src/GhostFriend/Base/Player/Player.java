@@ -9,6 +9,11 @@ import java.util.List;
 
 public class Player {
     private String name;
+
+    public Contract getContract() {
+        return contract;
+    }
+
     private Contract contract;
 
     public List<Card> getCardList() {
@@ -26,7 +31,11 @@ public class Player {
     }
 
     public void declareContract(CardSuit suit, Integer score) {
-        this.contract.set(suit, score);
+        this.contract.declare(suit, score);
+    }
+
+    public void declareContract(Contract contract) {
+        this.contract.declare(contract);
     }
 
     public Player(String name) {

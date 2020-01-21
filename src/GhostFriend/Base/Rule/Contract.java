@@ -4,13 +4,28 @@ import GhostFriend.Base.Card.CardSuit;
 
 public class Contract {
     private CardSuit giru;
+
+    public Integer getScore() {
+        return score;
+    }
+
     private Integer score;
     private Boolean isDeclared;
 
-    public void set(CardSuit suit, Integer score) {
+    public void declare(CardSuit suit, Integer score) {
         this.giru = suit;
         this.score = score;
         this.isDeclared = true;
+    }
+
+    public void declare(Contract contract) {
+        this.giru = contract.giru;
+        this.score = contract.score;
+        this.isDeclared = true;
+    }
+
+    public static Boolean IsValidGiru(Contract contract) {
+        return (contract.giru != CardSuit.JOKER);
     }
 
     @Override
