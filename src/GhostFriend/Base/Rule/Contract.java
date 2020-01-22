@@ -39,7 +39,7 @@ public class Contract {
         this.isDeclared = true;
     }
 
-    public static Boolean IsValidGiru(Contract contract) {
+    public static Boolean isValidGiru(Contract contract) {
         return (contract.giru != CardSuit.JOKER);
     }
 

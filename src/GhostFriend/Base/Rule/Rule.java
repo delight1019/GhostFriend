@@ -39,7 +39,7 @@ public class Rule {
 
     public Boolean IsValidContract(Contract currentContract, Contract newContract) {
         return ((newContract.getScore() >= this.minContractScore) &&
-                (newContract.getScore() > currentContract.getScore()) && Contract.IsValidGiru(newContract));
+                (newContract.getScore() > currentContract.getScore()) && Contract.isValidGiru(newContract));
     }
 
     public Rule() {
