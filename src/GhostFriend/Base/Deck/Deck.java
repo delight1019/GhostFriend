@@ -26,7 +26,7 @@ public class Deck {
         return cardList;
     }
 
-    public Card DrawCard() {
+    public Card drawCard() {
         Random random = new Random();
         int selectedIndex = random.nextInt(cardList.size());
         Card DrawnCard = cardList.get(selectedIndex);

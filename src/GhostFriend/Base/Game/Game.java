@@ -35,7 +35,7 @@ public class Game {
 
         for (int i = 0; i < numOfPlayers; i++) {
             for (int j = 0; j < Rule.getNumOfCardsPerPerson(); j++) {
-                players.get(i).receiveCard(deck.DrawCard());
+                players.get(i).receiveCard(deck.drawCard());
             }
         }
 

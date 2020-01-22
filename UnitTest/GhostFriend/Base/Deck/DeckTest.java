@@ -11,7 +11,7 @@ class DeckTest {
 
     @Test
     void drawCard() {
-        Card card = deck.DrawCard();
+        Card card = deck.drawCard();
         assertTrue(Card.IsValidCard(card));
     }
 }
