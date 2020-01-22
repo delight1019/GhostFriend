@@ -24,6 +24,7 @@ class CardTest {
     void testToString() {
         assertEquals("CLUB ACE", clubAce.toString());
         assertEquals("JOKER", joker.toString());
+        assertEquals("It's not valid card", invalidCard.toString());
     }
 
     @Test

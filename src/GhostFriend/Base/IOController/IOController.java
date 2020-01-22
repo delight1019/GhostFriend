@@ -34,7 +34,7 @@ public class IOController {
     public static Contract parseContract(String userInput) {
         String[] contractArray = userInput.split(" ");
         Contract contract = new Contract();
-        contract.declare(CardSuit.ConvertString(contractArray[0]), Integer.parseInt(contractArray[1]));
+        contract.declare(CardSuit.convertString(contractArray[0]), Integer.parseInt(contractArray[1]));
         return contract;
     }
     public static void determineDeclarer(Player player) {
