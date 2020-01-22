@@ -3,7 +3,6 @@ package GhostFriend.Base.Game;
 import GhostFriend.Base.Deck.Deck;
 import GhostFriend.Base.IOController.IOController;
 import GhostFriend.Base.Player.Player;
-import GhostFriend.Base.Rule.Contract;
 import GhostFriend.Base.Rule.Rule;
 
 import java.util.ArrayList;
@@ -16,7 +15,6 @@ public class Game {
     private Player declarer;
     private Player friend;
     private int numOfPlayers;
-    private Contract gameContract;
 
     public void StartPlaying(int numOfPlayers) {
         IOController.startGame();
@@ -24,10 +22,9 @@ public class Game {
         rule = new Rule();
         deck = new Deck();
         players = new ArrayList<>();
-        declarer = null;
+        declarer = new Player("Declarer");
         friend = null;
         this.numOfPlayers = numOfPlayers;
-        this.gameContract = new Contract();
 
         for (int i = 0; i < numOfPlayers; i++) {
             players.add(new Player("Player" + (i + 1)));
@@ -48,28 +45,41 @@ public class Game {
     }
 
     public void determineDeclarer() {
-        boolean isDetermiend = false;
+        Integer declareCount = 0;
+        int playerIndex = 0;
+        int numOfPass = 0;
 
-        while (!isDetermiend) {
-            for (int i = 0; i < numOfPlayers; i++) {
-                Player currentPlayer = players.get(i);
+        while (true) {
+            Player currentPlayer = players.get(playerIndex);
 
-                IOController.askBidding(currentPlayer, gameContract);
-                String userInput = IOController.scanner.nextLine();
+            IOController.askBidding(currentPlayer, declarer.getContract());
+            String userInput = IOController.scanner.nextLine();
 
-                if (userInput.equals("PASS")) {
-                    continue;
-                } else {
-                    // To do: 잘못된 입력이 들어왔을 경우에 대한 처리
+            if (userInput.toUpperCase().equals("PASS")) {
+                currentPlayer.getContract().Initialize();
+                numOfPass++;
+            } else {
+                // To do: 잘못된 입력이 들어왔을 경우에 대한 처리
 
-                    currentPlayer.declareContract(IOController.parseContract(userInput));
+                currentPlayer.declareContract(IOController.parseContract(userInput));
 
-                    if (rule.IsValidContract(gameContract, currentPlayer.getContract())) {
-                        gameContract = currentPlayer.getContract();
-                    }
+                if (rule.IsValidContract(declarer.getContract(), currentPlayer.getContract())) {
+                    declarer = currentPlayer;
+                    numOfPass = 0;
                 }
+            }
+
+            playerIndex++;
+
+            if (playerIndex == numOfPlayers) {
+                playerIndex = 0;
+            }
+
+            if (numOfPass == numOfPlayers - 1) {
+                break;
             }
         }
 
+        IOController.determineDeclarer(declarer);
     }
 }

@@ -3,6 +3,10 @@ package GhostFriend.Base.Rule;
 import GhostFriend.Base.Card.CardSuit;
 
 public class Contract {
+    public CardSuit getGiru() {
+        return giru;
+    }
+
     private CardSuit giru;
 
     public Integer getScore() {
@@ -10,7 +14,18 @@ public class Contract {
     }
 
     private Integer score;
+
+    public Boolean getDeclared() {
+        return isDeclared;
+    }
+
     private Boolean isDeclared;
+
+    public void Initialize() {
+        this.giru = CardSuit.JOKER;
+        this.score = -1;
+        this.isDeclared = false;
+    }
 
     public void declare(CardSuit suit, Integer score) {
         this.giru = suit;
@@ -38,8 +53,6 @@ public class Contract {
     }
 
     public Contract() {
-        this.giru = CardSuit.JOKER;
-        this.score = -1;
-        this.isDeclared = false;
+        Initialize();
     }
 }

@@ -37,4 +37,8 @@ public class IOController {
         contract.declare(CardSuit.ConvertString(contractArray[0]), Integer.parseInt(contractArray[1]));
         return contract;
     }
+    public static void determineDeclarer(Player player) {
+        System.out.println("주공은 " + player.getName() + "입니다.");
+        System.out.println("기루는 " + player.getContract().getGiru().toString() + ", " + "목표 점수는 " + player.getContract().getScore().toString() + "입니다.");
+    }
 }
