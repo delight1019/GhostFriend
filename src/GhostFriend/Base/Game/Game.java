@@ -63,7 +63,7 @@ public class Game {
 
                 currentPlayer.declareContract(IOController.parseContract(userInput));
 
-                if (rule.IsValidContract(declarer.getContract(), currentPlayer.getContract())) {
+                if (rule.isValidContract(declarer.getContract(), currentPlayer.getContract())) {
                     declarer = currentPlayer;
                     numOfPass = 0;
                 }
