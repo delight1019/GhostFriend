@@ -46,9 +46,10 @@ public class Game {
     }
 
     public void determineDeclarer() {
-        Integer declareCount = 0;
         int playerIndex = 0;
         int numOfPass = 0;
+
+        IOController.printCurrentMinContractScore(rule.getMinContractScore());
 
         while (true) {
             Player currentPlayer = players.get(playerIndex);
@@ -76,8 +77,14 @@ public class Game {
                 playerIndex = 0;
             }
 
-            if (numOfPass == numOfPlayers - 1) {
+            if ((numOfPass == numOfPlayers - 1) && declarer.getContract().getDeclared()){
                 break;
+            }
+
+            if (numOfPass == numOfPlayers) {
+                rule.decreaseMinContractScore();
+                IOController.printCurrentMinContractScore(rule.getMinContractScore());
+                numOfPass = 0;
             }
         }
 

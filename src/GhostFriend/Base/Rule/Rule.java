@@ -7,6 +7,11 @@ import GhostFriend.Base.Card.CardValue;
 public class Rule {
     private Card Mighty;
     private Card JokerCall;
+
+    public Integer getMinContractScore() {
+        return minContractScore;
+    }
+
     private Integer minContractScore;
 
     public Card getMighty() {
@@ -49,6 +54,10 @@ public class Rule {
         } else {
             return ContractValidation.VALID;
         }
+    }
+
+    public void decreaseMinContractScore() {
+        this.minContractScore--;
     }
 
     public Rule() {

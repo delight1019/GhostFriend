@@ -36,7 +36,7 @@ public class IOController {
 
         while (!isValidBidding(userInput)) {
             System.out.println("입력 형식이 올바르지 않습니다.");
-            System.out.println("기루 숫자 / PASS 형식으로 입력하세요. (ex. SPADE 5)");
+            System.out.println("기루 숫자 / PASS 형식으로 입력하세요. (ex. SPADE 14)");
             userInput = scanner.nextLine();
         }
 
@@ -87,5 +87,8 @@ public class IOController {
         else if (contractValidation == ContractValidation.SCORE) {
             System.out.println("현재 선언된 공약보다 큰 점수를 선언하여야합니다.");
         }
+    }
+    public static void printCurrentMinContractScore(Integer minContractScore) {
+        System.out.println("현재 선언할 수 있는 최소 점수는 " + minContractScore.toString() + "입니다.");
     }
 }
