@@ -77,12 +77,12 @@ public class IOController {
         System.out.println("주공은 " + player.getName() + "입니다.");
         System.out.println("기루는 " + player.getContract().getGiru().toString() + ", " + "목표 점수는 " + player.getContract().getScore().toString() + "입니다.");
     }
-    public static void invalidContract(ContractValidation contractValidation) {
+    public static void invalidContract(ContractValidation contractValidation, Integer minContractScore) {
         if (contractValidation == ContractValidation.GIRU) {
             System.out.println("조커는 기루로 선언할 수 없습니다.");
         }
         else if (contractValidation == ContractValidation.MINIMUM) {
-            System.out.println("선언할 수 있는 점수는 최소 13입니다.");
+            System.out.println("현재 선언할 수 있는 최소 점수는 " + minContractScore.toString() + "입니다.");
         }
         else if (contractValidation == ContractValidation.SCORE) {
             System.out.println("현재 선언된 공약보다 큰 점수를 선언하여야합니다.");

@@ -66,7 +66,7 @@ public class Game {
                     declarer = currentPlayer;
                     numOfPass = 0;
                 } else {
-                    IOController.invalidContract(rule.isValidContract(declarer.getContract(), currentPlayer.getContract()));
+                    IOController.invalidContract(rule.isValidContract(declarer.getContract(), currentPlayer.getContract()), rule.getMinContractScore());
                     continue;
                 }
             }
