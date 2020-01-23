@@ -37,9 +37,18 @@ public class Rule {
         return 10; // To-Do: I'm only considering the case that 5 players come in
     }
 
-    public Boolean isValidContract(Contract currentContract, Contract newContract) {
-        return ((newContract.getScore() >= this.minContractScore) &&
-                (newContract.getScore() > currentContract.getScore()) && Contract.isValidGiru(newContract));
+    public ContractValidation isValidContract(Contract currentContract, Contract newContract) {
+        if (newContract.getScore() < this.minContractScore) {
+            return ContractValidation.MINIMUM;
+        }
+        else if (newContract.getScore() <= currentContract.getScore()) {
+            return ContractValidation.SCORE;
+        }
+        else if (!Contract.isValidGiru(newContract)) {
+            return ContractValidation.GIRU;
+        } else {
+            return ContractValidation.VALID;
+        }
     }
 
     public Rule() {

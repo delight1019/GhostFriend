@@ -3,7 +3,7 @@ package GhostFriend.Base.Rule;
 import GhostFriend.Base.Card.CardSuit;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RuleTest {
     private Rule rule = new Rule();
@@ -21,15 +21,15 @@ class RuleTest {
         currentContract.declare(CardSuit.CLUB, 14);
 
         newContract.declare(CardSuit.JOKER, 15);
-        assertFalse(rule.isValidContract(currentContract, newContract));
+        assertEquals(ContractValidation.GIRU, rule.isValidContract(currentContract, newContract));
 
         newContract.declare(CardSuit.HEART, 5);
-        assertFalse(rule.isValidContract(currentContract, newContract));
+        assertEquals(ContractValidation.MINIMUM, rule.isValidContract(currentContract, newContract));
 
         newContract.declare(CardSuit.SPADE, 14);
-        assertFalse(rule.isValidContract(currentContract, newContract));
+        assertEquals(ContractValidation.SCORE, rule.isValidContract(currentContract, newContract));
 
         newContract.declare(CardSuit.SPADE, 17);
-        assertTrue(rule.isValidContract(currentContract, newContract));
+        assertEquals(ContractValidation.VALID, rule.isValidContract(currentContract, newContract));
     }
 }

@@ -3,6 +3,7 @@ package GhostFriend.Base.Game;
 import GhostFriend.Base.Deck.Deck;
 import GhostFriend.Base.IOController.IOController;
 import GhostFriend.Base.Player.Player;
+import GhostFriend.Base.Rule.ContractValidation;
 import GhostFriend.Base.Rule.Rule;
 
 import java.util.ArrayList;
@@ -52,20 +53,20 @@ public class Game {
         while (true) {
             Player currentPlayer = players.get(playerIndex);
 
-            IOController.askBidding(currentPlayer, declarer.getContract());
-            String userInput = IOController.scanner.nextLine();
+            String userInput = IOController.askBidding(currentPlayer, declarer.getContract());
 
             if (userInput.toUpperCase().equals("PASS")) {
                 currentPlayer.getContract().Initialize();
                 numOfPass++;
             } else {
-                // To do: 잘못된 입력이 들어왔을 경우에 대한 처리
-
                 currentPlayer.declareContract(IOController.parseContract(userInput));
 
-                if (rule.isValidContract(declarer.getContract(), currentPlayer.getContract())) {
+                if (rule.isValidContract(declarer.getContract(), currentPlayer.getContract()) == ContractValidation.VALID) {
                     declarer = currentPlayer;
                     numOfPass = 0;
+                } else {
+                    IOController.invalidContract(rule.isValidContract(declarer.getContract(), currentPlayer.getContract()));
+                    continue;
                 }
             }
 
