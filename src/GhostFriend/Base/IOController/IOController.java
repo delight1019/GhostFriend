@@ -91,4 +91,14 @@ public class IOController {
     public static void printCurrentMinContractScore(Integer minContractScore) {
         System.out.println("현재 선언할 수 있는 최소 점수는 " + minContractScore.toString() + "입니다.");
     }
+    public static Boolean askDealMiss(Player player) {
+        System.out.println(player.getName() + " 딜미스를 선언하시겠습니까? (Yes/No)");
+        String userInput = "";
+
+        while (!(userInput.toUpperCase().equals("YES") || userInput.toUpperCase().equals("NO"))) {
+            userInput = scanner.nextLine();
+        }
+
+        return (userInput.toUpperCase().equals("YES"));
+    }
 }

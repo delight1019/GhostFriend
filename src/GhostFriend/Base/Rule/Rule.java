@@ -4,6 +4,8 @@ import GhostFriend.Base.Card.Card;
 import GhostFriend.Base.Card.CardSuit;
 import GhostFriend.Base.Card.CardValue;
 
+import java.util.List;
+
 public class Rule {
     private Card Mighty;
     private Card JokerCall;
@@ -38,6 +40,23 @@ public class Rule {
         }
     }
 
+    private double getDealScore(Card card) {
+        if (card.getCardValue() == CardValue.TEN) {
+            return 0.5;
+        }
+        else if ((card.getCardValue() == CardValue.ACE) ||
+                (card.getCardValue() == CardValue.JACK) ||
+                (card.getCardValue() == CardValue.QUEEN) ||
+                (card.getCardValue() == CardValue.KING)) {
+            return 1.0;
+        }
+        else if (card.getCardValue() == CardValue.JOKER) {
+            return -1.0;
+        } else {
+            return 0.0;
+        }
+    }
+
     public static Integer getNumOfCardsPerPerson() {
         return 10; // To-Do: I'm only considering the case that 5 players come in
     }
@@ -58,6 +77,17 @@ public class Rule {
 
     public void decreaseMinContractScore() {
         this.minContractScore--;
+    }
+
+    public Boolean isDealMiss(List<Card> cardList) {
+
+        double score = 0.0;
+
+        for (Card card: cardList) {
+            score += getDealScore(card);
+        }
+
+        return (score < 2.0);
     }
 
     public Rule() {

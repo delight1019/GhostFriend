@@ -43,6 +43,14 @@ public class Game {
         for (int i = 0; i < numOfPlayers; i++) {
             IOController.checkCards(players.get(i));
         }
+
+        for (int i = 0; i < numOfPlayers; i++) {
+            if (rule.isDealMiss(players.get(i).getCardList())) {
+                if (IOController.askDealMiss(players.get(i))) {
+                    StartPlaying(numOfPlayers);
+                }
+            }
+        }
     }
 
     public void determineDeclarer() {
