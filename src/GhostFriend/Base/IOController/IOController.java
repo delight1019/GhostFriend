@@ -30,13 +30,13 @@ public class IOController {
     public static String askBidding(Player player, Contract contract) {
         System.out.println("현재 공약은 " + contract.toString());
         System.out.println(player.getName() + " 공약을 선언하시겠습니까?");
-        System.out.println("기루 숫자 / PASS 형식으로 입력하세요. (ex. SPADE 5)");
+        System.out.println("기루 숫자 / PASS 형식으로 입력하세요. (ex. SPADE 14 / No 18)");
 
         String userInput = scanner.nextLine();
 
         while (!isValidBidding(userInput)) {
             System.out.println("입력 형식이 올바르지 않습니다.");
-            System.out.println("기루 숫자 / PASS 형식으로 입력하세요. (ex. SPADE 14)");
+            System.out.println("기루 숫자 / PASS 형식으로 입력하세요. (ex. SPADE 14 / No 18)");
             userInput = scanner.nextLine();
         }
 
@@ -53,7 +53,7 @@ public class IOController {
                 return false;
             }
 
-            if (CardSuit.convertString(contractArray[0]) == null) {
+            if ((CardSuit.convertString(contractArray[0]) == null) && (!contractArray[0].toUpperCase().equals("NO"))) {
                 return false;
             }
 
@@ -70,7 +70,13 @@ public class IOController {
     public static Contract parseContract(String userInput) {
         String[] contractArray = userInput.split(" ");
         Contract contract = new Contract();
-        contract.declare(CardSuit.convertString(contractArray[0]), Integer.parseInt(contractArray[1]));
+
+        if (contractArray[0].toUpperCase().equals("NO")) {
+            contract.declare(null, Integer.parseInt(contractArray[1]));
+        } else {
+            contract.declare(CardSuit.convertString(contractArray[0]), Integer.parseInt(contractArray[1]));
+        }
+
         return contract;
     }
     public static void determineDeclarer(Player player) {
