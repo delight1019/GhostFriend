@@ -15,7 +15,7 @@ class ContractTest {
     void initialize() {
         testContract.declare(CardSuit.SPADE, 15);
         testContract.Initialize();
-        assertEquals(CardSuit.JOKER, testContract.getGiru());
+        assertNull(testContract.getGiru());
         assertEquals(-1, testContract.getScore());
         assertFalse(testContract.getDeclared());
     }
@@ -39,5 +39,11 @@ class ContractTest {
     @Test
     void testToString() {
         assertEquals("선언되지 않았습니다.", emptyContract.toString());
+
+        testContract.declare(CardSuit.SPADE, 15);
+        assertEquals("SPADE 15", testContract.toString());
+
+        testContract.declare(null, 18);
+        assertEquals("No giru 18", testContract.toString());
     }
 }

@@ -22,7 +22,7 @@ public class Contract {
     private Boolean isDeclared;
 
     public void Initialize() {
-        this.giru = CardSuit.JOKER;
+        this.giru = null;
         this.score = -1;
         this.isDeclared = false;
     }
@@ -46,7 +46,11 @@ public class Contract {
     @Override
     public String toString() {
         if (this.isDeclared) {
-            return this.giru.toString() + " " + this.score.toString();
+            if (this.giru == null) {
+                return "No giru" + " " + this.score.toString();
+            } else {
+                return this.giru.toString() + " " + this.score.toString();
+            }
         } else {
             return "선언되지 않았습니다.";
         }

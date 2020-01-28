@@ -20,16 +20,8 @@ public class Rule {
         return Mighty;
     }
 
-    public void setMighty(Card mighty) {
-        Mighty = mighty;
-    }
-
     public Card getJokerCall() {
         return JokerCall;
-    }
-
-    public void setJokerCall(Card jokerCall) {
-        JokerCall = jokerCall;
     }
 
     private Integer getScore(Card card) {

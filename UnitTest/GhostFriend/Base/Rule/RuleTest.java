@@ -37,6 +37,9 @@ class RuleTest {
 
         newContract.declare(CardSuit.SPADE, 17);
         assertEquals(ContractValidation.VALID, rule.isValidContract(currentContract, newContract));
+
+        newContract.declare(null, 18);
+        assertEquals(ContractValidation.VALID, rule.isValidContract(currentContract, newContract));
     }
 
     @Test
