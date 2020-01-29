@@ -1,5 +1,6 @@
 package GhostFriend.Base.Game;
 
+import GhostFriend.Base.Card.Card;
 import GhostFriend.Base.Deck.Deck;
 import GhostFriend.Base.IOController.IOController;
 import GhostFriend.Base.Player.Player;
@@ -97,5 +98,27 @@ public class Game {
         }
 
         IOController.determineDeclarer(declarer);
+    }
+
+    public void confirmDeclarerCards() {
+        IOController.confirmDeclarerCards(declarer);
+
+        for (int i = 0; i < 3; i++) {
+            declarer.receiveCard(deck.drawCard());
+        }
+
+        for (int i = 0; i < 3; i++) {
+            IOController.checkCards(declarer);
+            Card discardingCard = IOController.askDiscardingCard(declarer);
+
+            while (!declarer.hasCard(discardingCard)) {
+                IOController.doNotHaveCard(discardingCard);
+                IOController.checkCards(declarer);
+                discardingCard = IOController.askDiscardingCard(declarer);
+            }
+
+            declarer.discardCard(discardingCard);
+            deck.returnCard(discardingCard);
+        }
     }
 }

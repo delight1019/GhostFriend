@@ -53,6 +53,10 @@ public class Card {
         return Card.IsValidCard(card.getCardSuit(), card.getCardValue());
     }
 
+    public Boolean equals(Card card) {
+        return ((this.suit == card.getCardSuit()) && (this.value == card.getCardValue()));
+    }
+
     public Card(CardSuit suit, CardValue value) {
         this.suit = suit;
         this.value = value;

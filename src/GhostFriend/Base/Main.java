@@ -8,5 +8,6 @@ public class Main {
         Game Game = new Game();
         Game.StartPlaying(5);
         Game.determineDeclarer();
+        Game.confirmDeclarerCards();
     }
 }

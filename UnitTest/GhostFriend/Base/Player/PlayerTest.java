@@ -4,9 +4,10 @@ import GhostFriend.Base.Card.Card;
 import GhostFriend.Base.Card.CardSuit;
 import GhostFriend.Base.Card.CardValue;
 import GhostFriend.Base.Rule.Contract;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
     private Player player = new Player("testPlayer");
@@ -17,11 +18,22 @@ class PlayerTest {
     }
 
     @Test
+    @DisplayName("Receive and discard card")
     void receiveCard() {
-        player.receiveCard(new Card(CardSuit.JOKER, CardValue.JOKER));
-        player.receiveCard(new Card(CardSuit.CLUB, CardValue.SEVEN));
+        Card card1 = new Card(CardSuit.JOKER, CardValue.JOKER);
+        Card card2 = new Card(CardSuit.CLUB, CardValue.SEVEN);
 
-        assertEquals(2, player.getCardList().size());
+        player.receiveCard(card1);
+        player.receiveCard(card2);
+
+        assertTrue(player.getCardList().contains(card1));
+        assertTrue(player.getCardList().contains(card2));
+
+        player.discardCard(card1);
+        player.discardCard(card2);
+
+        assertFalse(player.getCardList().contains(card1));
+        assertFalse(player.getCardList().contains(card2));
     }
 
     @Test

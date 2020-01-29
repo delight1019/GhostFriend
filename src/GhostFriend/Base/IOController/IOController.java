@@ -2,6 +2,7 @@ package GhostFriend.Base.IOController;
 
 import GhostFriend.Base.Card.Card;
 import GhostFriend.Base.Card.CardSuit;
+import GhostFriend.Base.Card.CardValue;
 import GhostFriend.Base.Player.Player;
 import GhostFriend.Base.Rule.Contract;
 import GhostFriend.Base.Rule.ContractValidation;
@@ -106,5 +107,44 @@ public class IOController {
         }
 
         return (userInput.toUpperCase().equals("YES"));
+    }
+    public static void confirmDeclarerCards(Player declarer) {
+        System.out.println(declarer.getName() + " 카드 3장을 확인하고 버릴 3장을 선택하세요.");
+    }
+    public static Card askDiscardingCard(Player declarer) {
+        // To do: 조커 카드에 대한 조건이 누락되었음
+
+        System.out.println(declarer.getName() + " 버릴 카드를 입력하세요. (ex. SPADE ACE)");
+        String userInput = scanner.nextLine();
+
+        while (!isValidCard(userInput)) {
+            System.out.println("입력 형식이 올바르지 않습니다.");
+            System.out.println("버릴 카드를 입력하세요. (ex. SPADE ACE)");
+            userInput = scanner.nextLine();
+        }
+
+        String[] cardArray = userInput.split(" ");
+
+        return new Card(CardSuit.convertString(cardArray[0]), CardValue.convertString(cardArray[1]));
+    }
+    private static Boolean isValidCard(String userInput) {
+        String[] cardArray = userInput.split(" ");
+
+        if (cardArray.length != 2) {
+            return false;
+        }
+
+        if (CardSuit.convertString(cardArray[0]) == null) {
+            return false;
+        }
+
+        if (CardValue.convertString(cardArray[1]) == null) {
+            return false;
+        }
+
+        return true;
+    }
+    public static void doNotHaveCard(Card card) {
+        System.out.println(card.toString() + " 카드가 패에 존재하지 않습니다.");
     }
 }

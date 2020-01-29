@@ -30,6 +30,27 @@ public class Player {
         this.cardList.add(card);
     }
 
+    public void discardCard(Card card) {
+        for (Card checkingCard : this.cardList) {
+            if (checkingCard.equals(card)) {
+                card = checkingCard;
+                break;
+            }
+        }
+
+        this.cardList.remove(card);
+    }
+
+    public Boolean hasCard(Card card) {
+        for (Card checkingCard : this.cardList) {
+            if (checkingCard.equals(card)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public void declareContract(CardSuit suit, Integer score) {
         this.contract.declare(suit, score);
     }

@@ -35,6 +35,10 @@ public class Deck {
         return DrawnCard;
     }
 
+    public void returnCard(Card card) {
+        this.cardList.add(card);
+    }
+
     public Deck() {
         this.cardList = CreateDeck();
     }
