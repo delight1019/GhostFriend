@@ -120,5 +120,21 @@ public class Game {
             declarer.discardCard(discardingCard);
             deck.returnCard(discardingCard);
         }
+
+        rule.setMighty(declarer.getContract().getGiru());
+    }
+
+    public void determineFriend() {
+        Card friendCard = IOController.askFriendCard(declarer, rule.getMighty());
+
+        for (int i = 0; i < numOfPlayers; i++) {
+            Player currentPlayer = players.get(i);
+
+            if (currentPlayer != declarer) {
+                if (currentPlayer.hasCard(friendCard)) {
+                    friend = currentPlayer;
+                }
+            }
+        }
     }
 }

@@ -20,6 +20,12 @@ public class Rule {
         return Mighty;
     }
 
+    public void setMighty(CardSuit giru) {
+        if (giru == CardSuit.SPADE) {
+            Mighty = new Card(CardSuit.DIAMOND, CardValue.ACE);
+        }
+    }
+
     public Card getJokerCall() {
         return JokerCall;
     }
