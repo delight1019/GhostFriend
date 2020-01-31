@@ -122,10 +122,11 @@ public class Game {
         }
 
         rule.setMighty(declarer.getContract().getGiru());
+        rule.setJokerCall(declarer.getContract().getGiru());
     }
 
     public void determineFriend() {
-        Card friendCard = IOController.askFriendCard(declarer, rule.getMighty());
+        Card friendCard = IOController.askFriendCard(declarer, rule.getMighty(), rule.getJokerCall());
 
         for (int i = 0; i < numOfPlayers; i++) {
             Player currentPlayer = players.get(i);

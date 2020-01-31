@@ -30,6 +30,12 @@ public class Rule {
         return JokerCall;
     }
 
+    public void setJokerCall(CardSuit giru) {
+        if (giru == CardSuit.CLUB) {
+            JokerCall = new Card(CardSuit.HEART, CardValue.THREE);
+        }
+    }
+
     private Integer getScore(Card card) {
         if (card.IsScoreCard()) {
             return 1;

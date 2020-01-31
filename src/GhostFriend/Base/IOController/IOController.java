@@ -153,13 +153,13 @@ public class IOController {
     public static void doNotHaveCard(Card card) {
         System.out.println(card.toString() + " 카드가 패에 존재하지 않습니다.");
     }
-    public static Card askFriendCard(Player declarer, Card mighty) {
-        System.out.println(declarer.getName() + " 친구가 될 카드를 선택하세요. (ex. DIAMOND ACE / Mighty)");
+    public static Card askFriendCard(Player declarer, Card mighty, Card jokerCall) {
+        System.out.println(declarer.getName() + " 친구가 될 카드를 선택하세요. (ex. DIAMOND ACE / Mighty / Joker Call)");
         String userInput = scanner.nextLine();
 
         while (!isValidFriendCard(userInput)) {
             System.out.println("입력 형식이 올바르지 않습니다.");
-            System.out.println("친구가 될 카드를 선택하세요. (ex. DIAMOND ACE / Mighty)");
+            System.out.println("친구가 될 카드를 선택하세요. (ex. DIAMOND ACE / Mighty / Joker Call)");
             userInput = scanner.nextLine();
         }
 
@@ -171,12 +171,20 @@ public class IOController {
             return new Card(CardSuit.JOKER, CardValue.JOKER);
         }
 
+        if (userInput.toUpperCase().equals("JOKER CALL")) {
+            return jokerCall;
+        }
+
         String[] cardArray = userInput.split(" ");
 
         return new Card(CardSuit.convertString(cardArray[0]), CardValue.convertString(cardArray[1]));
     }
     private static Boolean isValidFriendCard(String userInput) {
         if (userInput.toUpperCase().equals("MIGHTY")) {
+            return true;
+        }
+
+        if (userInput.toUpperCase().equals("JOKER CALL")) {
             return true;
         }
 
