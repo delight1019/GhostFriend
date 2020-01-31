@@ -112,8 +112,6 @@ public class IOController {
         System.out.println(declarer.getName() + " 카드 3장을 확인하고 버릴 3장을 선택하세요.");
     }
     public static Card askDiscardingCard(Player declarer) {
-        // To do: 조커 카드에 대한 조건이 누락되었음
-
         System.out.println(declarer.getName() + " 버릴 카드를 입력하세요. (ex. SPADE ACE)");
         String userInput = scanner.nextLine();
 
@@ -123,11 +121,19 @@ public class IOController {
             userInput = scanner.nextLine();
         }
 
+        if (userInput.toUpperCase().equals("JOKER")) {
+            return new Card(CardSuit.JOKER, CardValue.JOKER);
+        }
+
         String[] cardArray = userInput.split(" ");
 
         return new Card(CardSuit.convertString(cardArray[0]), CardValue.convertString(cardArray[1]));
     }
     private static Boolean isValidCard(String userInput) {
+        if (userInput.toUpperCase().equals("JOKER")) {
+            return true;
+        }
+
         String[] cardArray = userInput.split(" ");
 
         if (cardArray.length != 2) {
@@ -159,6 +165,10 @@ public class IOController {
 
         if (userInput.toUpperCase().equals("MIGHTY")) {
             return mighty;
+        }
+
+        if (userInput.toUpperCase().equals("JOKER")) {
+            return new Card(CardSuit.JOKER, CardValue.JOKER);
         }
 
         String[] cardArray = userInput.split(" ");

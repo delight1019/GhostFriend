@@ -9,5 +9,6 @@ public class Main {
         Game.StartPlaying(5);
         Game.determineDeclarer();
         Game.confirmDeclarerCards();
+        Game.determineFriend();
     }
 }
