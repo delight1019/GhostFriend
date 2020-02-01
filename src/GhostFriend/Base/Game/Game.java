@@ -121,6 +121,10 @@ public class Game {
             deck.returnCard(discardingCard);
         }
 
+        if (IOController.askGiruChange(declarer, declarer.getContract())) {
+            declarer.declareContract(IOController.askGiruToChange(declarer), declarer.getContract().getScore() + 2);
+        }
+
         rule.setMighty(declarer.getContract().getGiru());
         rule.setJokerCall(declarer.getContract().getGiru());
     }

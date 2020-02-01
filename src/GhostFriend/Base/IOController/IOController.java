@@ -190,4 +190,52 @@ public class IOController {
 
         return isValidCard(userInput);
     }
+    public static Boolean askGiruChange(Player declarer, Contract contract) {
+        System.out.println("현재 공약은 " + contract.toString());
+        System.out.println(declarer.getName() + " 기루를 변경하시겠습니까? (Yes/No)");
+        String userInput = scanner.nextLine();
+
+        while (!(userInput.toUpperCase().equals("YES") || userInput.toUpperCase().equals("NO"))) {
+            System.out.println("입력 형식이 올바르지 않습니다.");
+            System.out.println(declarer.getName() + " 기루를 변경하시겠습니까? (Yes/No)");
+            userInput = scanner.nextLine();
+        }
+
+        if (userInput.toUpperCase().equals("YES")) {
+            return true;
+        }
+
+        if (userInput.toUpperCase().equals("NO")) {
+            return false;
+        }
+
+        return false;
+    }
+    public static CardSuit askGiruToChange(Player declarer) {
+        System.out.println(declarer.getName() + " 변경할 기루를 선택하세요 (ex. SPADE / No)");
+        String userInput = scanner.nextLine();
+
+        while (!isValidGiru(userInput)) {
+            System.out.println("입력 형식이 올바르지 않습니다.");
+            System.out.println(declarer.getName() + " 변경할 기루를 선택하세요 (ex. SPADE / No)");
+            userInput = scanner.nextLine();
+        }
+
+        if (userInput.toUpperCase().equals("NO")) {
+            return null;
+        }
+
+        return CardSuit.convertString(userInput);
+    }
+    private static Boolean isValidGiru(String userInput) {
+        if (userInput.toUpperCase().equals("NO")) {
+            return true;
+        }
+
+        if ((CardSuit.convertString(userInput) == CardSuit.JOKER) || (CardSuit.convertString(userInput) == null)) {
+            return false;
+        }
+
+        return true;
+    }
 }
