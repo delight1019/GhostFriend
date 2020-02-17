@@ -13,6 +13,8 @@ public class SocketServer {
     private static ExecutorService threadPool = Executors.newFixedThreadPool(PLAYER_NUMBER);
 
     public static void main(String[] args) {
+        System.out.println("Server started");
+
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
 
@@ -25,7 +27,7 @@ public class SocketServer {
                     e.printStackTrace();
                 }
                 finally {
-                    socket.close();
+                    //socket.close();
                 }
             }
 
