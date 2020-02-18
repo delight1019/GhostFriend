@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-public class ConnectionWrapper implements Runnable {
+public class ClientControl implements Runnable {
     private Socket socket = null;
 
     @Override
@@ -26,7 +26,7 @@ public class ConnectionWrapper implements Runnable {
         }
     }
 
-    public ConnectionWrapper(Socket socket) {
+    public ClientControl(Socket socket) {
         this.socket = socket;
     }
 }

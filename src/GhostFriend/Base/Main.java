@@ -1,14 +1,17 @@
 package GhostFriend.Base;
 
-import GhostFriend.Base.Game.Game;
+import GhostFriend.Server.SocketServer;
 
 public class Main {
 
     public static void main(String[] args) {
-        Game Game = new Game();
-        Game.StartPlaying(5);
-        Game.determineDeclarer();
-        Game.confirmDeclarerCards();
-        Game.determineFriend();
+        SocketServer server = new SocketServer();
+        server.start();
+
+//        Game Game = new Game();
+//        Game.StartPlaying(5);
+//        Game.determineDeclarer();
+//        Game.confirmDeclarerCards();
+//        Game.determineFriend();
     }
 }

@@ -1,5 +1,7 @@
 package GhostFriend.Server;
 
+import GhostFriend.Base.Game.Game;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,25 +11,28 @@ import java.util.concurrent.Executors;
 public class SocketServer {
     private static final int PORT = 9000;
     private static final int PLAYER_NUMBER = 5;
+    private int currentPlayerNum = 0;
 
     private static ExecutorService threadPool = Executors.newFixedThreadPool(PLAYER_NUMBER);
 
-    public static void main(String[] args) {
+    public void start() {
         System.out.println("Server started");
+        Game game = new Game();
 
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
 
-            while (true) {
+            while (currentPlayerNum < PLAYER_NUMBER) {
                 Socket socket = serverSocket.accept();
                 try {
-                    threadPool.execute(new ConnectionWrapper(socket));
+                    threadPool.execute(new ClientControl(socket));
+                    currentPlayerNum++;
                 }
                 catch (Exception e) {
                     e.printStackTrace();
                 }
                 finally {
-                    //socket.close();
+                    socket.close();
                 }
             }
 
