@@ -13,12 +13,13 @@ public class SocketServer {
     private static final int PORT = 9000;
     private static final int PLAYER_NUMBER = 5;
     private int currentPlayerNum = 0;
+    private Game game;
 
     private static ExecutorService threadPool = Executors.newFixedThreadPool(PLAYER_NUMBER);
 
     public void start() {
         Log.printText("Server started");
-        Game game = new Game();
+        game = new Game();
 
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);

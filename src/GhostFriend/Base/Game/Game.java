@@ -54,6 +54,13 @@ public class Game {
         }
     }
 
+    public Player addPlayer(String name) {
+        Player player = new Player(name);
+        players.add(player);
+
+        return player;
+    }
+
     public void determineDeclarer() {
         int playerIndex = 0;
         int numOfPass = 0;
