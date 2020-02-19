@@ -1,6 +1,7 @@
 package GhostFriend.Server;
 
 import GhostFriend.Base.Game.Game;
+import GhostFriend.Utils.Log;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -16,7 +17,7 @@ public class SocketServer {
     private static ExecutorService threadPool = Executors.newFixedThreadPool(PLAYER_NUMBER);
 
     public void start() {
-        System.out.println("Server started");
+        Log.printText("Server started");
         Game game = new Game();
 
         try {
