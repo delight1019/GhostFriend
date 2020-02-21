@@ -18,7 +18,16 @@ public class Game {
     private Player friend;
     private int numOfPlayers;
 
-    public void StartPlaying(int numOfPlayers) {
+    public void startPlaying() {
+        rule = new Rule();
+        deck = new Deck();
+        players = new ArrayList<>();
+        declarer = new Player("Declarer");
+        friend = null;
+        this.numOfPlayers = 0;
+    }
+
+    public void StartPlaying_old(int numOfPlayers) {
         IOController.startGame();
 
         rule = new Rule();
@@ -48,7 +57,7 @@ public class Game {
         for (int i = 0; i < numOfPlayers; i++) {
             if (rule.isDealMiss(players.get(i).getCardList())) {
                 if (IOController.askDealMiss(players.get(i))) {
-                    StartPlaying(numOfPlayers);
+                    //StartPlaying(numOfPlayers);
                 }
             }
         }
@@ -57,6 +66,8 @@ public class Game {
     public Player addPlayer(String name) {
         Player player = new Player(name);
         players.add(player);
+
+        numOfPlayers++;
 
         return player;
     }

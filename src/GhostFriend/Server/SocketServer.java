@@ -20,6 +20,7 @@ public class SocketServer {
     public void start() {
         Log.printText("Server started");
         game = new Game();
+        game.startPlaying();
 
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
@@ -27,14 +28,11 @@ public class SocketServer {
             while (currentPlayerNum < PLAYER_NUMBER) {
                 Socket socket = serverSocket.accept();
                 try {
-                    threadPool.execute(new ClientControl(socket));
+                    threadPool.execute(new ClientControl(socket, game));
                     currentPlayerNum++;
                 }
                 catch (Exception e) {
                     e.printStackTrace();
-                }
-                finally {
-                    socket.close();
                 }
             }
 

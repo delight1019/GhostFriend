@@ -1,5 +1,8 @@
 package GhostFriend.Server;
 
+import GhostFriend.Base.Game.Game;
+import GhostFriend.Base.Player.Player;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,6 +10,8 @@ import java.net.Socket;
 
 public class ClientControl implements Runnable {
     private Socket socket = null;
+    private Game game = null;
+    private Player player = null;
 
     @Override
     public void run() {
@@ -18,7 +23,7 @@ public class ClientControl implements Runnable {
             try {
                 bufReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 String playerName = bufReader.readLine();
-                System.out.println(playerName);
+                player = game.addPlayer(playerName);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -26,7 +31,8 @@ public class ClientControl implements Runnable {
         }
     }
 
-    public ClientControl(Socket socket) {
+    public ClientControl(Socket socket, Game game) {
         this.socket = socket;
+        this.game = game;
     }
 }
