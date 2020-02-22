@@ -65,7 +65,10 @@ public class Game {
 
     public Player addPlayer(String name) {
         Player player = new Player(name);
-        players.add(player);
+
+        synchronized (this) {
+            players.add(player);
+        }
 
         numOfPlayers++;
 
