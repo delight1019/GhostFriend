@@ -33,6 +33,7 @@ public class SocketServer {
                 }
                 catch (Exception e) {
                     e.printStackTrace();
+                    Log.printText("Test");
                 }
             }
 
