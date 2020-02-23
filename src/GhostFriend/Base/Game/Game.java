@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
+    private static final int PLAYER_NUMBER = 5;
+
     private Rule rule;
     private Deck deck;
     private List<Player> players;
@@ -25,6 +27,23 @@ public class Game {
         declarer = new Player("Declarer");
         friend = null;
         this.numOfPlayers = 0;
+    }
+
+    public boolean isAllPlayersEntered() {
+        synchronized (this) {
+            return (this.numOfPlayers == PLAYER_NUMBER);
+        }
+    }
+
+    public synchronized String getPlayersInfo() {
+        String playersInfo = "";
+
+        for (int i = 0; i < numOfPlayers; i++) {
+            playersInfo += players.get(i).getName();
+            playersInfo += "/";
+        }
+
+        return playersInfo;
     }
 
     public void StartPlaying_old(int numOfPlayers) {
@@ -68,9 +87,8 @@ public class Game {
 
         synchronized (this) {
             players.add(player);
+            numOfPlayers++;
         }
-
-        numOfPlayers++;
 
         return player;
     }
