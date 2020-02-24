@@ -50,8 +50,7 @@ public class ClientControl implements Runnable {
     }
 
     private void sendText(String text) {
-        byte[] dataToSend = text.getBytes();
-        printWriter.println(dataToSend);
+        printWriter.println(text);
     }
 
     public ClientControl(Socket socket, Game game) {
