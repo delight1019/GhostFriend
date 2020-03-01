@@ -36,21 +36,12 @@ public class ClientControl implements Runnable {
                     String playerName = bufferedReader.readLine();
                     player = game.addPlayer(playerName);
                 }
-
-                waitOtherPlayers();
+                else if (commandParam.equals(GameParams.ASK_PLAYERS_INFO)) {
+                    String playersInfo = game.getPlayersInfo(PLAYER_INFO_DELIMITER);
+                    sendText(playersInfo);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
-            }
-        }
-    }
-
-    public void waitOtherPlayers() {
-        while (true) {
-            if (game.isAllPlayersEntered()) {
-
-            } else {
-                String playersInfo = game.getPlayersInfo(PLAYER_INFO_DELIMITER);
-                sendText(playersInfo);
             }
         }
     }
