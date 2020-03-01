@@ -10,6 +10,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class ClientControl implements Runnable {
+    private final String PLAYER_INFO_DELIMITER = "/";
+
     private Socket socket = null;
     private BufferedReader bufferedReader;
     private PrintWriter printWriter;
@@ -28,8 +30,12 @@ public class ClientControl implements Runnable {
 
         while(true) {
             try {
-                String playerName = bufferedReader.readLine();
-                player = game.addPlayer(playerName);
+                String commandParam = bufferedReader.readLine();
+
+                if (commandParam.equals(GameParams.JOIN_GAME)) {
+                    String playerName = bufferedReader.readLine();
+                    player = game.addPlayer(playerName);
+                }
 
                 waitOtherPlayers();
             } catch (IOException e) {
@@ -43,7 +49,7 @@ public class ClientControl implements Runnable {
             if (game.isAllPlayersEntered()) {
 
             } else {
-                String playersInfo = game.getPlayersInfo();
+                String playersInfo = game.getPlayersInfo(PLAYER_INFO_DELIMITER);
                 sendText(playersInfo);
             }
         }

@@ -35,12 +35,12 @@ public class Game {
         }
     }
 
-    public synchronized String getPlayersInfo() {
+    public synchronized String getPlayersInfo(String delimiter) {
         String playersInfo = "";
 
         for (int i = 0; i < numOfPlayers; i++) {
             playersInfo += players.get(i).getName();
-            playersInfo += "/";
+            playersInfo += delimiter;
         }
 
         return playersInfo;
