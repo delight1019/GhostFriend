@@ -2,12 +2,14 @@ package GhostFriend.Server;
 
 import GhostFriend.Base.Game.Game;
 import GhostFriend.Base.Player.Player;
+import GhostFriend.Utils.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class ClientControl implements Runnable {
     private final String PLAYER_INFO_DELIMITER = "/";
@@ -20,7 +22,9 @@ public class ClientControl implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Connection accepted");
+        Log.printText("Connection accepted");
+        Boolean isConnected = true;
+
         try {
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             printWriter = new PrintWriter(socket.getOutputStream(), true);
@@ -28,7 +32,7 @@ public class ClientControl implements Runnable {
             e.printStackTrace();
         }
 
-        while(true) {
+        while(isConnected) {
             try {
                 String commandParam = bufferedReader.readLine();
 
@@ -40,10 +44,19 @@ public class ClientControl implements Runnable {
                     String playersInfo = game.getPlayersInfo(PLAYER_INFO_DELIMITER);
                     sendText(playersInfo);
                 }
-            } catch (IOException e) {
+            }
+            catch (SocketException e) {
                 e.printStackTrace();
+                game.removePlayer(player);
+                isConnected = false;
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+                isConnected = false;
             }
         }
+
+        Log.printText("Thread terminated");
     }
 
     private void sendText(String text) {

@@ -31,16 +31,18 @@ public class Game {
 
     public boolean isAllPlayersEntered() {
         synchronized (this) {
-            return (this.numOfPlayers == PLAYER_NUMBER);
+            return (players.size() == PLAYER_NUMBER);
         }
     }
 
-    public synchronized String getPlayersInfo(String delimiter) {
+    public String getPlayersInfo(String delimiter) {
         String playersInfo = "";
 
-        for (int i = 0; i < numOfPlayers; i++) {
-            playersInfo += players.get(i).getName();
-            playersInfo += delimiter;
+        synchronized (this) {
+            for (int i = 0; i < players.size(); i++) {
+                playersInfo += players.get(i).getName();
+                playersInfo += delimiter;
+            }
         }
 
         return playersInfo;
@@ -87,10 +89,15 @@ public class Game {
 
         synchronized (this) {
             players.add(player);
-            numOfPlayers++;
         }
 
         return player;
+    }
+
+    public void removePlayer(Player player) {
+        synchronized (this) {
+            players.remove(player);
+        }
     }
 
     public void determineDeclarer() {
