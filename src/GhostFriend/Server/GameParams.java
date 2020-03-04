@@ -1,7 +1,11 @@
 package GhostFriend.Server;
 
 public class GameParams {
+    // Receive Parameters
     public static final String JOIN_GAME = "JoinGame";
     public static final String ASK_PLAYERS_INFO = "AskPlayersInfo";
-    public static final String ERROR_PLAYERS_NUM_OVER = "ErrorPlayersNumOver";
+
+    // Send Parameters
+    public static final String JOIN_SUCCESS = "JoinSuccess";
+    public static final String JOIN_FAIL = "JoinFail";
 }

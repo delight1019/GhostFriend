@@ -11,11 +11,11 @@ import java.util.concurrent.Executors;
 
 public class SocketServer {
     private static final int PORT = 9000;
-    private static final int PLAYER_NUMBER = 5;
+    private static final int MAX_THREAD = 10;
     private int currentPlayerNum = 0;
     private Game game;
 
-    private static ExecutorService threadPool = Executors.newFixedThreadPool(PLAYER_NUMBER);
+    private static ExecutorService threadPool = Executors.newFixedThreadPool(MAX_THREAD);
 
     public void start() {
         Log.printText("Server started");
@@ -25,7 +25,7 @@ public class SocketServer {
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
 
-            while (currentPlayerNum < PLAYER_NUMBER) {
+            while (currentPlayerNum < MAX_THREAD) {
                 Socket socket = serverSocket.accept();
                 try {
                     threadPool.execute(new ClientControl(socket, game));

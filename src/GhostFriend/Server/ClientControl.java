@@ -41,7 +41,9 @@ public class ClientControl implements Runnable {
                     player = game.addPlayer(playerName);
 
                     if (player == null) {
-                        sendText(GameParams.ERROR_PLAYERS_NUM_OVER);
+                        sendText(GameParams.JOIN_FAIL);
+                    } else {
+                        sendText(GameParams.JOIN_SUCCESS);
                     }
                 }
                 else if (commandParam.equals(GameParams.ASK_PLAYERS_INFO)) {
