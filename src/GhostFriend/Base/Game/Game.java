@@ -85,13 +85,15 @@ public class Game {
     }
 
     public Player addPlayer(String name) {
-        Player player = new Player(name);
-
         synchronized (this) {
-            players.add(player);
+            if (players.size() >= PLAYER_NUMBER) {
+                return null;
+            } else {
+                Player player = new Player(name);
+                players.add(player);
+                return player;
+            }
         }
-
-        return player;
     }
 
     public void removePlayer(Player player) {

@@ -39,6 +39,10 @@ public class ClientControl implements Runnable {
                 if (commandParam.equals(GameParams.JOIN_GAME)) {
                     String playerName = bufferedReader.readLine();
                     player = game.addPlayer(playerName);
+
+                    if (player == null) {
+                        sendText(GameParams.ERROR_PLAYERS_NUM_OVER);
+                    }
                 }
                 else if (commandParam.equals(GameParams.ASK_PLAYERS_INFO)) {
                     String playersInfo = game.getPlayersInfo(PLAYER_INFO_DELIMITER);
