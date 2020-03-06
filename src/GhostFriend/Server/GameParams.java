@@ -8,4 +8,7 @@ public class GameParams {
     // Send Parameters
     public static final String JOIN_SUCCESS = "JoinSuccess";
     public static final String JOIN_FAIL = "JoinFail";
+    public static final String JOIN_NEW_PLAYER = "JoinNewPlayer";
+    public static final String EXIT_PLAYER = "ExitPlayer";
+    public static final String ALL_PLAYERS_ENTERED = "AllPlayersJoin";
 }

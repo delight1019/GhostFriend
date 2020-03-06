@@ -7,15 +7,17 @@ import GhostFriend.Base.Player.Player;
 import GhostFriend.Base.Rule.ContractValidation;
 import GhostFriend.Base.Rule.Rule;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 public class Game {
     private static final int PLAYER_NUMBER = 5;
 
     private Rule rule;
     private Deck deck;
-    private List<Player> players;
+    private HashMap<Player, PrintWriter> players;
     private Player declarer;
     private Player friend;
     private int numOfPlayers;
@@ -23,7 +25,7 @@ public class Game {
     public void startPlaying() {
         rule = new Rule();
         deck = new Deck();
-        players = new ArrayList<>();
+        players = new HashMap<Player, PrintWriter>();
         declarer = new Player("Declarer");
         friend = null;
         this.numOfPlayers = 0;
@@ -38,9 +40,12 @@ public class Game {
     public String getPlayersInfo(String delimiter) {
         String playersInfo = "";
 
-        synchronized (this) {
-            for (int i = 0; i < players.size(); i++) {
-                playersInfo += players.get(i).getName();
+        synchronized (players) {
+            Set<Player> playerSet = players.keySet();
+            Iterator<Player> iter = playerSet.iterator();
+
+            while (iter.hasNext()) {
+                playersInfo += iter.next().getName();
                 playersInfo += delimiter;
             }
         }
@@ -53,53 +58,57 @@ public class Game {
 
         rule = new Rule();
         deck = new Deck();
-        players = new ArrayList<>();
+        //players = new ArrayList<>();
         declarer = new Player("Declarer");
         friend = null;
         this.numOfPlayers = numOfPlayers;
 
         for (int i = 0; i < numOfPlayers; i++) {
-            players.add(new Player("Player" + (i + 1)));
-            IOController.joinPlayer(players.get(i).getName());
+            //players.add(new Player("Player" + (i + 1)));
+            //IOController.joinPlayer(players.get(i).getName());
         }
 
         IOController.handCardsOut();
 
         for (int i = 0; i < numOfPlayers; i++) {
             for (int j = 0; j < Rule.getNumOfCardsPerPerson(); j++) {
-                players.get(i).receiveCard(deck.drawCard());
+                //players.get(i).receiveCard(deck.drawCard());
             }
         }
 
         for (int i = 0; i < numOfPlayers; i++) {
-            IOController.checkCards(players.get(i));
+            //IOController.checkCards(players.get(i));
         }
 
         for (int i = 0; i < numOfPlayers; i++) {
-            if (rule.isDealMiss(players.get(i).getCardList())) {
-                if (IOController.askDealMiss(players.get(i))) {
+            //if (rule.isDealMiss(players.get(i).getCardList())) {
+//                if (IOController.askDealMiss(players.get(i))) {
                     //StartPlaying(numOfPlayers);
-                }
-            }
+                //}
+            //}
         }
     }
 
-    public Player addPlayer(String name) {
-        synchronized (this) {
+    public Player addPlayer(String name, PrintWriter printWriter) {
+        synchronized (players) {
             if (players.size() >= PLAYER_NUMBER) {
                 return null;
             } else {
                 Player player = new Player(name);
-                players.add(player);
+                players.put(player, printWriter);
                 return player;
             }
         }
     }
 
     public void removePlayer(Player player) {
-        synchronized (this) {
+        synchronized (players) {
             players.remove(player);
         }
+    }
+
+    public HashMap<Player, PrintWriter> getPlayers() {
+        return players;
     }
 
     public void determineDeclarer() {
@@ -109,7 +118,7 @@ public class Game {
         IOController.printCurrentMinContractScore(rule.getMinContractScore());
 
         while (true) {
-            Player currentPlayer = players.get(playerIndex);
+            Player currentPlayer = null;
 
             String userInput = IOController.askBidding(currentPlayer, declarer.getContract());
 
@@ -181,7 +190,7 @@ public class Game {
         Card friendCard = IOController.askFriendCard(declarer, rule.getMighty(), rule.getJokerCall());
 
         for (int i = 0; i < numOfPlayers; i++) {
-            Player currentPlayer = players.get(i);
+            Player currentPlayer = null;
 
             if (currentPlayer != declarer) {
                 if (currentPlayer.hasCard(friendCard)) {

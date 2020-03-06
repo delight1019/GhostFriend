@@ -10,15 +10,17 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Collection;
+import java.util.Iterator;
 
 public class ClientControl implements Runnable {
     private final String PLAYER_INFO_DELIMITER = "/";
 
-    private Socket socket = null;
+    private Socket socket;
     private BufferedReader bufferedReader;
     private PrintWriter printWriter;
-    private Game game = null;
-    private Player player = null;
+    private Game game;
+    private Player player;
 
     @Override
     public void run() {
@@ -32,18 +34,23 @@ public class ClientControl implements Runnable {
             e.printStackTrace();
         }
 
-        while(isConnected) {
+        while (isConnected) {
             try {
                 String commandParam = bufferedReader.readLine();
 
                 if (commandParam.equals(GameParams.JOIN_GAME)) {
                     String playerName = bufferedReader.readLine();
-                    player = game.addPlayer(playerName);
+                    player = game.addPlayer(playerName, printWriter);
 
                     if (player == null) {
                         sendText(GameParams.JOIN_FAIL);
                     } else {
                         sendText(GameParams.JOIN_SUCCESS);
+                        broadcast(GameParams.JOIN_NEW_PLAYER);
+
+                        if (game.isAllPlayersEntered()) {
+                            broadcast(GameParams.ALL_PLAYERS_ENTERED);
+                        }
                     }
                 }
                 else if (commandParam.equals(GameParams.ASK_PLAYERS_INFO)) {
@@ -54,6 +61,7 @@ public class ClientControl implements Runnable {
             catch (SocketException e) {
                 e.printStackTrace();
                 game.removePlayer(player);
+                broadcast(GameParams.EXIT_PLAYER);
                 isConnected = false;
             }
             catch (IOException e) {
@@ -67,6 +75,20 @@ public class ClientControl implements Runnable {
 
     private void sendText(String text) {
         printWriter.println(text);
+        printWriter.flush();
+    }
+
+    private void broadcast(String text) {
+        synchronized (game.getPlayers()) {
+            Collection<PrintWriter> collection = game.getPlayers().values();
+            Iterator<PrintWriter> iter = collection.iterator();
+
+            while (iter.hasNext()) {
+                PrintWriter pw = iter.next();
+                pw.println(text);
+                pw.flush();
+            }
+        }
     }
 
     public ClientControl(Socket socket, Game game) {
