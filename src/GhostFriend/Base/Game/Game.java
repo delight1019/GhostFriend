@@ -22,7 +22,7 @@ public class Game {
     private Player friend;
     private int numOfPlayers;
 
-    public void startPlaying() {
+    public Game() {
         rule = new Rule();
         deck = new Deck();
         players = new HashMap<Player, PrintWriter>();

@@ -20,7 +20,6 @@ public class SocketServer {
     public void start() {
         Log.printText("Server started");
         game = new Game();
-        game.startPlaying();
 
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
