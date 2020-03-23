@@ -11,4 +11,5 @@ public class GameParams {
     public static final String JOIN_NEW_PLAYER = "JoinNewPlayer";
     public static final String EXIT_PLAYER = "ExitPlayer";
     public static final String ALL_PLAYERS_ENTERED = "AllPlayersJoin";
+    public static final String DISTRIBUTE_CARDS = "DistributesCard";
 }

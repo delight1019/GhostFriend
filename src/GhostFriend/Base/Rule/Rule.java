@@ -62,7 +62,7 @@ public class Rule {
     }
 
     public static Integer getNumOfCardsPerPerson() {
-        return 10; // To-Do: I'm only considering the case that 5 players come in
+        return 10; // ToDo: I'm only considering the case that 5 players come in
     }
 
     public ContractValidation isValidContract(Contract currentContract, Contract newContract) {

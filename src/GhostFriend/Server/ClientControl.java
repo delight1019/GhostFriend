@@ -50,6 +50,8 @@ public class ClientControl implements Runnable {
 
                         if (game.isAllPlayersEntered()) {
                             broadcast(GameParams.ALL_PLAYERS_ENTERED);
+                            game.distributeCards();
+                            broadcast(GameParams.DISTRIBUTE_CARDS);
                         }
                     }
                 }

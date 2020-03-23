@@ -111,6 +111,21 @@ public class Game {
         return players;
     }
 
+    public void distributeCards() {
+        synchronized (players) {
+            Set<Player> playerSet = players.keySet();
+            Iterator<Player> iter = playerSet.iterator();
+
+            while (iter.hasNext()) {
+                Player player = iter.next();
+
+                for (int i = 0; i < Rule.getNumOfCardsPerPerson(); i++) {
+                    player.receiveCard(deck.drawCard());
+                }
+            }
+        }
+    }
+
     public void determineDeclarer() {
         int playerIndex = 0;
         int numOfPass = 0;
