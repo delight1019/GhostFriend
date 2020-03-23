@@ -9,7 +9,6 @@ import GhostFriend.Base.Rule.Rule;
 
 import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Set;
 
 public class Game {
@@ -17,7 +16,7 @@ public class Game {
 
     private Rule rule;
     private Deck deck;
-    private HashMap<Player, PrintWriter> players;
+    private final HashMap<Player, PrintWriter> players;
     private Player declarer;
     private Player friend;
     private int numOfPlayers;
@@ -25,7 +24,7 @@ public class Game {
     public Game() {
         rule = new Rule();
         deck = new Deck();
-        players = new HashMap<Player, PrintWriter>();
+        players = new HashMap<>();
         declarer = new Player("Declarer");
         friend = null;
         this.numOfPlayers = 0;
@@ -38,19 +37,18 @@ public class Game {
     }
 
     public String getPlayersInfo(String delimiter) {
-        String playersInfo = "";
+        StringBuilder playersInfo = new StringBuilder();
 
         synchronized (players) {
             Set<Player> playerSet = players.keySet();
-            Iterator<Player> iter = playerSet.iterator();
 
-            while (iter.hasNext()) {
-                playersInfo += iter.next().getName();
-                playersInfo += delimiter;
+            for (Player player : playerSet) {
+                playersInfo.append(player.getName());
+                playersInfo.append(delimiter);
             }
         }
 
-        return playersInfo;
+        return playersInfo.toString();
     }
 
     public void StartPlaying_old(int numOfPlayers) {
@@ -63,18 +61,7 @@ public class Game {
         friend = null;
         this.numOfPlayers = numOfPlayers;
 
-        for (int i = 0; i < numOfPlayers; i++) {
-            //players.add(new Player("Player" + (i + 1)));
-            //IOController.joinPlayer(players.get(i).getName());
-        }
-
         IOController.handCardsOut();
-
-        for (int i = 0; i < numOfPlayers; i++) {
-            for (int j = 0; j < Rule.getNumOfCardsPerPerson(); j++) {
-                //players.get(i).receiveCard(deck.drawCard());
-            }
-        }
 
         for (int i = 0; i < numOfPlayers; i++) {
             //IOController.checkCards(players.get(i));
@@ -114,11 +101,8 @@ public class Game {
     public void distributeCards() {
         synchronized (players) {
             Set<Player> playerSet = players.keySet();
-            Iterator<Player> iter = playerSet.iterator();
 
-            while (iter.hasNext()) {
-                Player player = iter.next();
-
+            for (Player player : playerSet) {
                 for (int i = 0; i < Rule.getNumOfCardsPerPerson(); i++) {
                     player.receiveCard(deck.drawCard());
                 }

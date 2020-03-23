@@ -11,7 +11,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Collection;
-import java.util.Iterator;
 
 public class ClientControl implements Runnable {
     private final String PLAYER_INFO_DELIMITER = "/";
@@ -25,7 +24,7 @@ public class ClientControl implements Runnable {
     @Override
     public void run() {
         Log.printText("Connection accepted");
-        Boolean isConnected = true;
+        boolean isConnected = true;
 
         try {
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -83,10 +82,8 @@ public class ClientControl implements Runnable {
     private void broadcast(String text) {
         synchronized (game.getPlayers()) {
             Collection<PrintWriter> collection = game.getPlayers().values();
-            Iterator<PrintWriter> iter = collection.iterator();
 
-            while (iter.hasNext()) {
-                PrintWriter pw = iter.next();
+            for (PrintWriter pw : collection) {
                 pw.println(text);
                 pw.flush();
             }
