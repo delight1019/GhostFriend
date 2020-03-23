@@ -6,8 +6,10 @@ import GhostFriend.Base.IOController.IOController;
 import GhostFriend.Base.Player.Player;
 import GhostFriend.Base.Rule.ContractValidation;
 import GhostFriend.Base.Rule.Rule;
+import GhostFriend.Server.GameParams;
 
 import java.io.PrintWriter;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -28,6 +30,26 @@ public class Game {
         declarer = new Player("Declarer");
         friend = null;
         this.numOfPlayers = 0;
+    }
+
+    public void broadcast(String text) {
+        synchronized (players) {
+            Collection<PrintWriter> collection = players.values();
+
+            for (PrintWriter printWriter : collection) {
+                printWriter.println(text);
+                printWriter.flush();
+            }
+        }
+    }
+
+    private void notify(Player player, String text) {
+        synchronized (players) {
+            PrintWriter printWriter = players.get(player);
+
+            printWriter.println(text);
+            printWriter.flush();
+        }
     }
 
     public boolean isAllPlayersEntered() {
@@ -73,6 +95,15 @@ public class Game {
                     //StartPlaying(numOfPlayers);
                 //}
             //}
+        }
+    }
+
+    public void startPlaying() {
+        distributeCards();
+        broadcast(GameParams.DISTRIBUTE_CARDS);
+
+        for (Player player : players.keySet()) {
+            notify(player, player.getCardListInfo(GameParams.PLAYER_INFO_DELIMITER));
         }
     }
 

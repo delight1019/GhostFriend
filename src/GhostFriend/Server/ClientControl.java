@@ -10,11 +10,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.Collection;
 
 public class ClientControl implements Runnable {
-    private final String PLAYER_INFO_DELIMITER = "/";
-
     private Socket socket;
     private BufferedReader bufferedReader;
     private PrintWriter printWriter;
@@ -45,24 +42,23 @@ public class ClientControl implements Runnable {
                         sendText(GameParams.JOIN_FAIL);
                     } else {
                         sendText(GameParams.JOIN_SUCCESS);
-                        broadcast(GameParams.JOIN_NEW_PLAYER);
+                        game.broadcast(GameParams.JOIN_NEW_PLAYER);
 
                         if (game.isAllPlayersEntered()) {
-                            broadcast(GameParams.ALL_PLAYERS_ENTERED);
-                            game.distributeCards();
-                            broadcast(GameParams.DISTRIBUTE_CARDS);
+                            game.broadcast(GameParams.ALL_PLAYERS_ENTERED);
+                            game.startPlaying();
                         }
                     }
                 }
                 else if (commandParam.equals(GameParams.ASK_PLAYERS_INFO)) {
-                    String playersInfo = game.getPlayersInfo(PLAYER_INFO_DELIMITER);
+                    String playersInfo = game.getPlayersInfo(GameParams.PLAYER_INFO_DELIMITER);
                     sendText(playersInfo);
                 }
             }
             catch (SocketException e) {
                 e.printStackTrace();
                 game.removePlayer(player);
-                broadcast(GameParams.EXIT_PLAYER);
+                game.broadcast(GameParams.EXIT_PLAYER);
                 isConnected = false;
             }
             catch (IOException e) {
@@ -77,17 +73,6 @@ public class ClientControl implements Runnable {
     private void sendText(String text) {
         printWriter.println(text);
         printWriter.flush();
-    }
-
-    private void broadcast(String text) {
-        synchronized (game.getPlayers()) {
-            Collection<PrintWriter> collection = game.getPlayers().values();
-
-            for (PrintWriter pw : collection) {
-                pw.println(text);
-                pw.flush();
-            }
-        }
     }
 
     public ClientControl(Socket socket, Game game) {

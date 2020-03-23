@@ -20,6 +20,17 @@ public class Player {
         return cardList;
     }
 
+    public String getCardListInfo(String delimiter) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (Card card : cardList) {
+            stringBuilder.append(card.toString());
+            stringBuilder.append(delimiter);
+        }
+
+        return stringBuilder.toString();
+    }
+
     private List<Card> cardList;
 
     public String getName() {
