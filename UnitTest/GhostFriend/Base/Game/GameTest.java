@@ -2,13 +2,11 @@ package GhostFriend.Base.Game;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.FileNotFoundException;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
     @Test
-    void isAllPlayersEntered() throws FileNotFoundException {
+    void isAllPlayersEntered() {
         Game game = new Game();
 
         game.addPlayer("Tester1");
@@ -22,7 +20,7 @@ class GameTest {
     }
 
     @Test
-    void getPlayersInfo() throws FileNotFoundException {
+    void getPlayersInfo() {
         Game game = new Game();
 
         game.addPlayer("Tester1");
@@ -35,7 +33,7 @@ class GameTest {
     }
 
     @Test
-    void addPlayer() throws FileNotFoundException {
+    void addPlayer() {
         Game game = new Game();
 
         assertEquals("Tester1", game.addPlayer("Tester1").getName());

@@ -17,11 +17,10 @@ public class MainServer {
     private static MainServer instance;
 
     private static Game game;
-    private List<PlayerInfo> playersList;
+    private final List<PlayerInfo> playersList;
 
     private MainServer(Game game) {
         this.playersList = new ArrayList<>();
-        this.game = game;
     }
 
     public static MainServer getInstance() {
