@@ -36,16 +36,16 @@ public class ClientControl implements Runnable {
 
                 if (commandParam.equals(GameParams.JOIN_GAME)) {
                     String playerName = bufferedReader.readLine();
-                    player = game.addPlayer(playerName, printWriter);
+                    player = MainServer.getInstance().addPlayer(playerName, printWriter, bufferedReader);
 
                     if (player == null) {
                         sendText(GameParams.JOIN_FAIL);
                     } else {
                         sendText(GameParams.JOIN_SUCCESS);
-                        game.broadcast(GameParams.JOIN_NEW_PLAYER);
+                        MainServer.getInstance().broadcast(GameParams.JOIN_NEW_PLAYER);
 
                         if (game.isAllPlayersEntered()) {
-                            game.broadcast(GameParams.ALL_PLAYERS_ENTERED);
+                            MainServer.getInstance().broadcast(GameParams.ALL_PLAYERS_ENTERED);
                             game.startPlaying();
                         }
                     }
@@ -58,7 +58,7 @@ public class ClientControl implements Runnable {
             catch (SocketException e) {
                 e.printStackTrace();
                 game.removePlayer(player);
-                game.broadcast(GameParams.EXIT_PLAYER);
+                MainServer.getInstance().broadcast(GameParams.EXIT_PLAYER);
                 isConnected = false;
             }
             catch (IOException e) {
