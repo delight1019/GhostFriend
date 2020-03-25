@@ -58,7 +58,15 @@ public class ClientControl implements Runnable {
             catch (SocketException e) {
                 e.printStackTrace();
                 game.removePlayer(player);
-                MainServer.getInstance().broadcast(GameParams.EXIT_PLAYER);
+
+                try {
+                    MainServer.getInstance().broadcast(GameParams.EXIT_PLAYER);
+                }
+
+                catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
                 isConnected = false;
             }
             catch (IOException e) {
@@ -70,9 +78,15 @@ public class ClientControl implements Runnable {
         Log.printText("Thread terminated");
     }
 
-    private void sendText(String text) {
+    private void sendText(String text) throws IOException {
         printWriter.println(text);
         printWriter.flush();
+
+        String response = bufferedReader.readLine();
+
+        while (!response.equals(GameParams.COMPLETE_REQUEST)) {
+            response = bufferedReader.readLine();
+        }
     }
 
     public ClientControl(Socket socket, Game game) {

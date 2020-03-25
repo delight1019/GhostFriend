@@ -4,6 +4,7 @@ import GhostFriend.Base.Game.Game;
 import GhostFriend.Base.Player.Player;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,11 +50,17 @@ public class MainServer {
         return player;
     }
 
-    public void broadcast(String text) {
+    public void broadcast(String text) throws IOException {
         synchronized (playersList) {
             for (PlayerInfo playerInfo : playersList) {
                 playerInfo.printWriter.println(text);
                 playerInfo.printWriter.flush();
+
+                String response = playerInfo.bufferedReader.readLine();
+
+                while (!response.equals(GameParams.COMPLETE_REQUEST)) {
+                    response = playerInfo.bufferedReader.readLine();
+                }
             }
         }
     }
