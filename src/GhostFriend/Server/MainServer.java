@@ -59,13 +59,13 @@ public class MainServer {
 
                 Log.printText("Broadcast to " + playerInfo.player.getName() + ": " + text);
 
-                String response = playerInfo.bufferedReader.readLine();
-
-                Log.printText("Broadcast response of " + playerInfo.player.getName());
-
-                while (!response.equals(GameParams.COMPLETE_REQUEST)) {
-                    response = playerInfo.bufferedReader.readLine();
-                }
+//                String response = playerInfo.bufferedReader.readLine();
+//
+//                Log.printText("Broadcast response of " + playerInfo.player.getName());
+//
+//                while (!response.equals(GameParams.COMPLETE_REQUEST)) {
+//                    response = playerInfo.bufferedReader.readLine();
+//                }
             }
         }
     }
