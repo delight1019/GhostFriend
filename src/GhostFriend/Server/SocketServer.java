@@ -18,12 +18,13 @@ public class SocketServer {
     private static ExecutorService threadPool = Executors.newFixedThreadPool(MAX_THREAD);
 
     public void start() {
-        Log.printText("Server started");
         game = new Game();
         MainServer.registerGame(game);
 
         try {
             ServerSocket serverSocket = new ServerSocket(PORT);
+
+            Log.printText("Socket server starts");
 
             while (currentPlayerNum < MAX_THREAD) {
                 Socket socket = serverSocket.accept();

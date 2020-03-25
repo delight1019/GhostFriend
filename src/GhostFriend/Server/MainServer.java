@@ -2,6 +2,7 @@ package GhostFriend.Server;
 
 import GhostFriend.Base.Game.Game;
 import GhostFriend.Base.Player.Player;
+import GhostFriend.Utils.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -56,7 +57,11 @@ public class MainServer {
                 playerInfo.printWriter.println(text);
                 playerInfo.printWriter.flush();
 
+                Log.printText("Broadcast to " + playerInfo.player.getName() + ": " + text);
+
                 String response = playerInfo.bufferedReader.readLine();
+
+                Log.printText("Broadcast response of " + playerInfo.player.getName());
 
                 while (!response.equals(GameParams.COMPLETE_REQUEST)) {
                     response = playerInfo.bufferedReader.readLine();

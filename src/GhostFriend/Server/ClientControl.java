@@ -20,7 +20,12 @@ public class ClientControl implements Runnable {
 
     @Override
     public void run() {
-        Log.printText("Connection accepted");
+        try {
+            Log.printText("Connection accepted");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         boolean isConnected = true;
 
         try {
@@ -33,6 +38,10 @@ public class ClientControl implements Runnable {
         while (isConnected) {
             try {
                 String commandParam = bufferedReader.readLine();
+
+                if (player != null) {
+                    Log.printText("Receive from: " + player.getName() + ": " + commandParam);
+                }
 
                 if (commandParam.equals(GameParams.JOIN_GAME)) {
                     String playerName = bufferedReader.readLine();
@@ -75,14 +84,22 @@ public class ClientControl implements Runnable {
             }
         }
 
-        Log.printText("Thread terminated");
+        try {
+            Log.printText("Thread terminated");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void sendText(String text) throws IOException {
         printWriter.println(text);
         printWriter.flush();
 
+        Log.printText("Send to " + player.getName() + ": " + text);
+
         String response = bufferedReader.readLine();
+
+        Log.printText("Response of " + player.getName());
 
         while (!response.equals(GameParams.COMPLETE_REQUEST)) {
             response = bufferedReader.readLine();
