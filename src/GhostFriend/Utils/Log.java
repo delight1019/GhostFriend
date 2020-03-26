@@ -20,6 +20,7 @@ public class Log {
 
         try {
             fileWriter.write(simpleDateFormat.format(System.currentTimeMillis()));
+            fileWriter.write(" (" + Thread.currentThread().getId() + ")");
             fileWriter.write(" ---- ");
             fileWriter.write(text);
             fileWriter.write("\n");

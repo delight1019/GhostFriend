@@ -40,7 +40,7 @@ public class ClientControl implements Runnable {
                 String commandParam = bufferedReader.readLine();
 
                 if (player != null) {
-                    Log.printText("Receive from: " + player.getName() + ": " + commandParam);
+                    Log.printText("Receive from " + player.getName() + ": " + commandParam);
                 }
 
                 if (commandParam.equals(GameParams.JOIN_GAME)) {
