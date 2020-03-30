@@ -48,28 +48,28 @@ public class ClientControl implements Runnable {
                     player = MainServer.getInstance().addPlayer(playerName, printWriter, bufferedReader);
 
                     if (player == null) {
-                        sendText(GameParams.JOIN_FAIL);
+                        sendCommand(GameParams.JOIN_FAIL, "");
                     } else {
-                        sendText(GameParams.JOIN_SUCCESS);
-                        MainServer.getInstance().broadcast(GameParams.JOIN_NEW_PLAYER);
+                        //sendText(GameParams.JOIN_SUCCESS);
+                        MainServer.getInstance().broadcast(GameParams.JOIN_NEW_PLAYER, game.getPlayersInfo(GameParams.PLAYER_INFO_DELIMITER));
 
                         if (game.isAllPlayersEntered()) {
-                            MainServer.getInstance().broadcast(GameParams.ALL_PLAYERS_ENTERED);
+                            //MainServer.getInstance().broadcast(GameParams.ALL_PLAYERS_ENTERED);
                             game.startPlaying();
                         }
                     }
                 }
-                else if (commandParam.equals(GameParams.ASK_PLAYERS_INFO)) {
-                    String playersInfo = game.getPlayersInfo(GameParams.PLAYER_INFO_DELIMITER);
-                    sendText(playersInfo);
-                }
+//                else if (commandParam.equals(GameParams.ASK_PLAYERS_INFO)) {Z
+//                    String playersInfo = game.getPlayersInfo(GameParams.PLAYER_INFO_DELIMITER);
+//                    //sendText(playersInfo);
+//                }
             }
             catch (SocketException e) {
                 e.printStackTrace();
                 game.removePlayer(player);
 
                 try {
-                    MainServer.getInstance().broadcast(GameParams.EXIT_PLAYER);
+                    MainServer.getInstance().broadcast(GameParams.EXIT_PLAYER, game.getPlayersInfo(GameParams.PLAYER_INFO_DELIMITER));
                 }
 
                 catch (IOException e1) {
@@ -91,19 +91,15 @@ public class ClientControl implements Runnable {
         }
     }
 
-    private void sendText(String text) throws IOException {
-        printWriter.println(text);
+    private void sendCommand(String command, String data) throws IOException {
+        printWriter.println(command + GameParams.DATA_DELIMITER + data + GameParams.COMMAND_DELIMITER);
         printWriter.flush();
 
-        Log.printText("Send to " + player.getName() + ": " + text);
+        Log.printText("Send to " + player.getName() + ": " + command);
 
         String response = bufferedReader.readLine();
 
         Log.printText("Response of " + player.getName());
-
-        while (!response.equals(GameParams.COMPLETE_REQUEST)) {
-            response = bufferedReader.readLine();
-        }
     }
 
     public ClientControl(Socket socket, Game game) {

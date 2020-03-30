@@ -51,13 +51,13 @@ public class MainServer {
         return player;
     }
 
-    public void broadcast(String text) throws IOException {
+    public void broadcast(String command, String data) throws IOException {
         synchronized (playersList) {
             for (PlayerInfo playerInfo : playersList) {
-                playerInfo.printWriter.println(text);
+                playerInfo.printWriter.println(command + GameParams.DATA_DELIMITER + data + GameParams.COMMAND_DELIMITER);
                 playerInfo.printWriter.flush();
 
-                Log.printText("Broadcast to " + playerInfo.player.getName() + ": " + text);
+                Log.printText("Broadcast to " + playerInfo.player.getName() + ": " + command);
             }
         }
     }
