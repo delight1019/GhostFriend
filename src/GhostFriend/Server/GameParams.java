@@ -2,8 +2,8 @@ package GhostFriend.Server;
 
 public class GameParams {
     public static final String PLAYER_INFO_DELIMITER = "/";
-    public static final String COMMAND_DELIMITER = "+";
-    public static final String DATA_DELIMITER = "-";
+    public static final String COMMAND_DELIMITER = "-";
+    public static final String DATA_DELIMITER = "_";
 
     // Receive Parameters
     public static final String COMPLETE_REQUEST = "CompleteRequest";

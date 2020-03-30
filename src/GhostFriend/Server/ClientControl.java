@@ -37,25 +37,15 @@ public class ClientControl implements Runnable {
 
         while (isConnected) {
             try {
-                String commandParam = bufferedReader.readLine();
+                String clientCommand = bufferedReader.readLine();
+                String[] commandList = clientCommand.split(GameParams.COMMAND_DELIMITER);
 
-                if (player != null) {
-                    Log.printText("Receive from " + player.getName() + ": " + commandParam);
-                }
-
-                if (commandParam.equals(GameParams.JOIN_GAME)) {
-                    String playerName = bufferedReader.readLine();
-                    player = MainServer.getInstance().addPlayer(playerName, printWriter, bufferedReader);
-
-                    if (player == null) {
-                        sendCommand(GameParams.JOIN_FAIL, "");
-                    } else {
-                        MainServer.getInstance().broadcast(GameParams.JOIN_NEW_PLAYER, game.getPlayersInfo(GameParams.PLAYER_INFO_DELIMITER));
-
-                        if (game.isAllPlayersEntered()) {
-                            game.startPlaying();
-                        }
+                for (String command : commandList) {
+                    if (player != null) {
+                        Log.printText("Receive from " + player.getName() + ": " + command);
                     }
+
+                    handleCommand(command);
                 }
             }
             catch (SocketException e) {
@@ -82,6 +72,38 @@ public class ClientControl implements Runnable {
             Log.printText("Thread terminated");
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void handleCommand(String inputCommand) throws IOException {
+        String[ ] commandStructure = inputCommand.split(GameParams.DATA_DELIMITER);
+        String command, data;
+
+        if (commandStructure.length == 1) {
+            command = commandStructure[0];
+            data = "";
+        }
+        else if (commandStructure.length == 2) {
+            command = commandStructure[0];
+            data = commandStructure[1];
+        }
+        else {
+            command = "";
+            data = "";
+        }
+
+        if (command.equals(GameParams.JOIN_GAME)) {
+            player = MainServer.getInstance().addPlayer(data, printWriter, bufferedReader);
+
+            if (player == null) {
+                sendCommand(GameParams.JOIN_FAIL, "");
+            } else {
+                MainServer.getInstance().broadcast(GameParams.JOIN_NEW_PLAYER, game.getPlayersInfo(GameParams.PLAYER_INFO_DELIMITER));
+
+                if (game.isAllPlayersEntered()) {
+                    game.startPlaying();
+                }
+            }
         }
     }
 
