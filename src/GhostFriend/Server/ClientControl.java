@@ -50,19 +50,13 @@ public class ClientControl implements Runnable {
                     if (player == null) {
                         sendCommand(GameParams.JOIN_FAIL, "");
                     } else {
-                        //sendText(GameParams.JOIN_SUCCESS);
                         MainServer.getInstance().broadcast(GameParams.JOIN_NEW_PLAYER, game.getPlayersInfo(GameParams.PLAYER_INFO_DELIMITER));
 
                         if (game.isAllPlayersEntered()) {
-                            //MainServer.getInstance().broadcast(GameParams.ALL_PLAYERS_ENTERED);
                             game.startPlaying();
                         }
                     }
                 }
-//                else if (commandParam.equals(GameParams.ASK_PLAYERS_INFO)) {Z
-//                    String playersInfo = game.getPlayersInfo(GameParams.PLAYER_INFO_DELIMITER);
-//                    //sendText(playersInfo);
-//                }
             }
             catch (SocketException e) {
                 e.printStackTrace();
@@ -96,10 +90,6 @@ public class ClientControl implements Runnable {
         printWriter.flush();
 
         Log.printText("Send to " + player.getName() + ": " + command);
-
-        String response = bufferedReader.readLine();
-
-        Log.printText("Response of " + player.getName());
     }
 
     public ClientControl(Socket socket, Game game) {
