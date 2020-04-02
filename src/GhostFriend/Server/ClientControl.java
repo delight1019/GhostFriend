@@ -102,6 +102,7 @@ public class ClientControl implements Runnable {
 
                 if (game.isAllPlayersEntered()) {
                     game.startPlaying();
+                    MainServer.getInstance().broadcast(GameParams.DISTRIBUTE_CARDS, player.getCardListInfo(GameParams.PLAYER_INFO_DELIMITER));
                 }
             }
         }

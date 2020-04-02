@@ -75,11 +75,6 @@ public class Game {
 
     public void startPlaying() {
         distributeCards();
-        //broadcast(GameParams.DISTRIBUTE_CARDS);
-
-//        for (Player player : players.keySet()) {
-//            notify(player, player.getCardListInfo(GameParams.PLAYER_INFO_DELIMITER));
-//        }
     }
 
     public Player addPlayer(String name) {
@@ -102,15 +97,13 @@ public class Game {
     }
 
     public void distributeCards() {
-//        synchronized (players) {
-//            Set<Player> playerSet = players.keySet();
-//
-//            for (Player player : playerSet) {
-//                for (int i = 0; i < Rule.getNumOfCardsPerPerson(); i++) {
-//                    player.receiveCard(deck.drawCard());
-//                }
-//            }
-//        }
+        synchronized (players) {
+            for (Player player : players) {
+                for (int i = 0; i < Rule.getNumOfCardsPerPerson(); i++) {
+                    player.receiveCard(deck.drawCard());
+                }
+            }
+        }
     }
 
     public void determineDeclarer() {
