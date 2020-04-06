@@ -53,7 +53,7 @@ public class ClientControl implements Runnable {
                 game.removePlayer(player);
 
                 try {
-                    MainServer.getInstance().broadcast(GameParams.EXIT_PLAYER, game.getPlayersInfo(GameParams.PLAYER_INFO_DELIMITER));
+                    MainServer.getInstance().broadcast(GameParams.EXIT_PLAYER, game.getPlayersInfo(GameParams.DATA_DELIMITER));
                 }
 
                 catch (IOException e1) {
@@ -76,7 +76,7 @@ public class ClientControl implements Runnable {
     }
 
     private void handleCommand(String inputCommand) throws IOException {
-        String[ ] commandStructure = inputCommand.split(GameParams.DATA_DELIMITER);
+        String[ ] commandStructure = inputCommand.split(GameParams.COMMAND_DATA_DELIMITER);
         String command, data;
 
         if (commandStructure.length == 1) {
@@ -98,18 +98,18 @@ public class ClientControl implements Runnable {
             if (player == null) {
                 sendCommand(GameParams.JOIN_FAIL, "");
             } else {
-                MainServer.getInstance().broadcast(GameParams.JOIN_NEW_PLAYER, game.getPlayersInfo(GameParams.PLAYER_INFO_DELIMITER));
+                MainServer.getInstance().broadcast(GameParams.JOIN_NEW_PLAYER, game.getPlayersInfo(GameParams.DATA_DELIMITER));
 
                 if (game.isAllPlayersEntered()) {
                     game.startPlaying();
-                    MainServer.getInstance().broadcast(GameParams.DISTRIBUTE_CARDS, player.getCardListInfo(GameParams.PLAYER_INFO_DELIMITER));
+                    MainServer.getInstance().broadcast(GameParams.DISTRIBUTE_CARDS, player.getCardListInfo(GameParams.DATA_DELIMITER));
                 }
             }
         }
     }
 
     private void sendCommand(String command, String data) throws IOException {
-        printWriter.println(command + GameParams.DATA_DELIMITER + data + GameParams.COMMAND_DELIMITER);
+        printWriter.println(command + GameParams.COMMAND_DATA_DELIMITER + data + GameParams.COMMAND_DELIMITER);
         printWriter.flush();
 
         Log.printText("Send to " + player.getName() + ": " + command);

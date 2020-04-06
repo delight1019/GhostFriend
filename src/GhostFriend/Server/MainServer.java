@@ -54,7 +54,7 @@ public class MainServer {
     public void broadcast(String command, String data) throws IOException {
         synchronized (playersList) {
             for (PlayerInfo playerInfo : playersList) {
-                playerInfo.printWriter.println(command + GameParams.DATA_DELIMITER + data + GameParams.COMMAND_DELIMITER);
+                playerInfo.printWriter.println(command + GameParams.COMMAND_DATA_DELIMITER + data + GameParams.COMMAND_DELIMITER);
                 playerInfo.printWriter.flush();
 
                 Log.printText("Broadcast to " + playerInfo.player.getName() + ": " + command);
