@@ -9,14 +9,20 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainServer {
+    private static final int THREAD_NUM = 10;
+    private ExecutorService executorService;
+
     private static MainServer instance;
 
     private static Game game;
     private final List<PlayerInfo> playersList;
 
     private MainServer(Game game) {
+        this.executorService = Executors.newFixedThreadPool(THREAD_NUM);
         this.playersList = new ArrayList<>();
     }
 
@@ -46,15 +52,23 @@ public class MainServer {
         return player;
     }
 
-    public void broadcast(String command, String data) throws IOException {
-        synchronized (playersList) {
-            for (PlayerInfo playerInfo : playersList) {
-                playerInfo.printWriter.println(command + GameParams.COMMAND_DATA_DELIMITER + data + GameParams.COMMAND_DELIMITER);
-                playerInfo.printWriter.flush();
+    public void broadcast(String command, String data) {
+        Runnable runBroadcast = () -> {
+            synchronized (playersList) {
+                for (PlayerInfo playerInfo : playersList) {
+                    playerInfo.printWriter.println(command + GameParams.COMMAND_DATA_DELIMITER + data + GameParams.COMMAND_DELIMITER);
+                    playerInfo.printWriter.flush();
 
-                Log.printText("Broadcast to " + playerInfo.player.getName() + ": " + command);
+                    try {
+                        Log.printText("Broadcast to " + playerInfo.player.getName() + ": " + command);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-        }
+        };
+
+        executorService.execute(runBroadcast);
     }
 
     private class PlayerInfo {

@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.SocketException;
 
 public class ClientControl implements Runnable {
     private Socket socket;
@@ -48,32 +47,11 @@ public class ClientControl implements Runnable {
                     handleCommand(command);
                 }
             }
-            catch (SocketException e) {
+            catch (Exception e) {
                 e.printStackTrace();
                 game.removePlayer(player);
 
-                try {
-                    MainServer.getInstance().broadcast(GameParams.EXIT_PLAYER, game.getPlayersInfo(GameParams.DATA_DELIMITER));
-                }
-
-                catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-
-                isConnected = false;
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-                game.removePlayer(player);
-
-                try {
-                    MainServer.getInstance().broadcast(GameParams.EXIT_PLAYER, game.getPlayersInfo(GameParams.DATA_DELIMITER));
-                }
-
-                catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-
+                MainServer.getInstance().broadcast(GameParams.EXIT_PLAYER, game.getPlayersInfo(GameParams.DATA_DELIMITER));
                 isConnected = false;
             }
         }
