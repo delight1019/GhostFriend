@@ -52,6 +52,31 @@ public class MainServer {
         return player;
     }
 
+    public void startPlaying() {
+        Runnable runnable = () -> {
+            game.distributeCards();
+
+            synchronized (playersList) {
+                for (PlayerInfo playerInfo : playersList) {
+                    broadcast(playerInfo, GameParams.DISTRIBUTE_CARDS, playerInfo.player.getCardListInfo(GameParams.DATA_DELIMITER));
+                }
+            }
+        };
+
+        executorService.execute(runnable);
+    }
+
+    private void broadcast(PlayerInfo playerInfo, String command, String data) {
+        playerInfo.printWriter.println(command + GameParams.COMMAND_DATA_DELIMITER + data + GameParams.COMMAND_DELIMITER);
+        playerInfo.printWriter.flush();
+
+        try {
+            Log.printText("Broadcast to " + playerInfo.player.getName() + ": " + command);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void broadcast(String command, String data) {
         Runnable runBroadcast = () -> {
             synchronized (playersList) {
