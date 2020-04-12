@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    private static final int PLAYER_NUMBER = 5;
+    private static final int PLAYER_NUMBER = 2;
 
     private Rule rule;
     private Deck deck;
@@ -71,10 +71,6 @@ public class Game {
                 //}
             //}
         }
-    }
-
-    public void startPlaying() {
-        distributeCards();
     }
 
     public Player addPlayer(String name) {
