@@ -64,6 +64,16 @@ public class ClientControl implements Runnable {
             }
             catch (IOException e) {
                 e.printStackTrace();
+                game.removePlayer(player);
+
+                try {
+                    MainServer.getInstance().broadcast(GameParams.EXIT_PLAYER, game.getPlayersInfo(GameParams.DATA_DELIMITER));
+                }
+
+                catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
                 isConnected = false;
             }
         }

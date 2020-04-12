@@ -9,13 +9,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class MainServer {
-    private static final int MAX_THREAD = 100;
-    private static ExecutorService threadPool = Executors.newFixedThreadPool(MAX_THREAD);
-
     private static MainServer instance;
 
     private static Game game;
