@@ -1,6 +1,7 @@
 package GhostFriend.Server;
 
 import GhostFriend.Base.Game.Game;
+import GhostFriend.Base.Player.DealMissStatus;
 import GhostFriend.Base.Player.Player;
 import GhostFriend.Utils.Log;
 
@@ -59,7 +60,20 @@ public class MainServer {
             synchronized (playersList) {
                 for (PlayerInfo playerInfo : playersList) {
                     broadcast(playerInfo, GameParams.DISTRIBUTE_CARDS, playerInfo.player.getCardListInfo(GameParams.DATA_DELIMITER));
+                    broadcast(playerInfo, GameParams.CHECK_DEAL_MISS, game.isDealMiss(playerInfo.player).toString());
                 }
+            }
+        };
+
+        executorService.execute(runnable);
+    }
+
+    public void checkDealMissDeclared() {
+        Runnable runnable = () -> {
+            if (game.isDealMissDeclared() == DealMissStatus.MISS) {
+                game.clear();
+                broadcast(GameParams.RESTART_GAME);
+                startPlaying();
             }
         };
 
@@ -95,6 +109,26 @@ public class MainServer {
 
         executorService.execute(runBroadcast);
     }
+
+    public void broadcast(String command) {
+        Runnable runnable = () -> {
+            synchronized (playersList) {
+                for (PlayerInfo playerInfo : playersList) {
+                    playerInfo.printWriter.println(command + GameParams.COMMAND_DELIMITER);
+                    playerInfo.printWriter.flush();
+
+                    try {
+                        Log.printText("Broadcast to " + playerInfo.player.getName() + ": " + command);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+
+        executorService.execute(runnable);
+    }
+
 
     private class PlayerInfo {
         private Player player;

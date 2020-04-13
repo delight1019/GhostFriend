@@ -9,6 +9,7 @@ import java.util.List;
 
 public class Player {
     private String name;
+    private DealMissStatus dealMissStatus;
 
     public Contract getContract() {
         return contract;
@@ -70,8 +71,26 @@ public class Player {
         this.contract.declare(contract);
     }
 
+    public void checkDealMiss(Boolean isDealMissDeclared) {
+        if (isDealMissDeclared) {
+            this.dealMissStatus = DealMissStatus.MISS;
+        } else {
+            this.dealMissStatus = DealMissStatus.OK;
+        }
+    }
+
+    public void clearGameInfo() {
+        this.cardList.clear();
+        this.dealMissStatus = DealMissStatus.CHECKING;
+    }
+
+    public DealMissStatus getDealMissStatus() {
+        return this.dealMissStatus;
+    }
+
     public Player(String name) {
         this.name = name;
+        this.dealMissStatus = DealMissStatus.CHECKING;
         this.cardList = new ArrayList<>();
         this.contract = new Contract();
     }

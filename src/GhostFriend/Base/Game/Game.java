@@ -3,6 +3,7 @@ package GhostFriend.Base.Game;
 import GhostFriend.Base.Card.Card;
 import GhostFriend.Base.Deck.Deck;
 import GhostFriend.Base.IOController.IOController;
+import GhostFriend.Base.Player.DealMissStatus;
 import GhostFriend.Base.Player.Player;
 import GhostFriend.Base.Rule.ContractValidation;
 import GhostFriend.Base.Rule.Rule;
@@ -48,29 +49,33 @@ public class Game {
         return playersInfo.toString();
     }
 
-    public void StartPlaying_old(int numOfPlayers) {
-        IOController.startGame();
-
-        rule = new Rule();
+    public void clear() {
         deck = new Deck();
-        //players = new ArrayList<>();
-        declarer = new Player("Declarer");
-        friend = null;
-        this.numOfPlayers = numOfPlayers;
 
-        IOController.handCardsOut();
+        synchronized (players) {
+            for (Player player : players) {
+                player.clearGameInfo();
+            }
+        }
+    }
 
-        for (int i = 0; i < numOfPlayers; i++) {
-            //IOController.checkCards(players.get(i));
+    public Boolean isDealMiss(Player player) {
+        return rule.isDealMiss(player.getCardList());
+    }
+
+    public DealMissStatus isDealMissDeclared() {
+        synchronized (players) {
+            for (Player player : players) {
+                if (player.getDealMissStatus() == DealMissStatus.CHECKING) {
+                    return DealMissStatus.CHECKING;
+                }
+                else if (player.getDealMissStatus() == DealMissStatus.MISS) {
+                    return DealMissStatus.MISS;
+                }
+            }
         }
 
-        for (int i = 0; i < numOfPlayers; i++) {
-            //if (rule.isDealMiss(players.get(i).getCardList())) {
-//                if (IOController.askDealMiss(players.get(i))) {
-                    //StartPlaying(numOfPlayers);
-                //}
-            //}
-        }
+        return DealMissStatus.OK;
     }
 
     public Player addPlayer(String name) {

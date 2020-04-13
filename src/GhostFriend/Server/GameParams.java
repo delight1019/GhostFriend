@@ -6,15 +6,14 @@ public class GameParams {
     public static final String COMMAND_DATA_DELIMITER = "_";
 
     // Receive Parameters
-    public static final String COMPLETE_REQUEST = "CompleteRequest";
     public static final String JOIN_GAME = "JoinGame";
-    public static final String ASK_PLAYERS_INFO = "AskPlayersInfo";
+    public static final String REPLY_DEAL_MISS = "ReplyDealMiss";
 
     // Send Parameters
-    public static final String JOIN_SUCCESS = "JoinSuccess";
     public static final String JOIN_FAIL = "JoinFail";
     public static final String JOIN_NEW_PLAYER = "JoinNewPlayer";
     public static final String EXIT_PLAYER = "ExitPlayer";
-    public static final String ALL_PLAYERS_ENTERED = "AllPlayersJoin";
     public static final String DISTRIBUTE_CARDS = "DistributesCard";
+    public static final String CHECK_DEAL_MISS = "CheckDealMiss";
+    public static final String RESTART_GAME = "RestartGame";
 }

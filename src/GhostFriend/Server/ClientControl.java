@@ -93,6 +93,10 @@ public class ClientControl implements Runnable {
                 }
             }
         }
+        else if (command.equals(GameParams.REPLY_DEAL_MISS)) {
+            player.checkDealMiss(Boolean.parseBoolean(data));
+            MainServer.getInstance().checkDealMissDeclared();
+        }
     }
 
     private void sendCommand(String command, String data) throws IOException {
