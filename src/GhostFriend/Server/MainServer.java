@@ -21,6 +21,7 @@ public class MainServer {
 
     private static Game game;
     private final List<PlayerInfo> playersList;
+    private int declaringGiruIndex;
 
     private MainServer(Game game) {
         this.executorService = Executors.newFixedThreadPool(THREAD_NUM);
@@ -75,9 +76,19 @@ public class MainServer {
                 broadcast(GameParams.RESTART_GAME);
                 startPlaying();
             }
+            else if (game.isDealMissDeclared() == DealMissStatus.OK) {
+                declaringGiruIndex = 0;
+                askGiruDeclaring();
+            }
         };
 
         executorService.execute(runnable);
+    }
+
+    private void askGiruDeclaring() {
+        PlayerInfo playerInfo = playersList.get(declaringGiruIndex);
+        broadcast(playerInfo, GameParams.ASK_GIRU, String.valueOf(game.getMinContractScore()) + GameParams.DATA_DELIMITER + game.getCurrentContract());
+        declaringGiruIndex++;
     }
 
     private void broadcast(PlayerInfo playerInfo, String command, String data) {

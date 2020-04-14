@@ -107,6 +107,18 @@ public class Game {
         }
     }
 
+    public int getMinContractScore() {
+        if (declarer == null) {
+            return rule.getMinContractScore();
+        } else {
+            return declarer.getContract().getScore();
+        }
+    }
+
+    public String getCurrentContract() {
+        return declarer.getContract().toString();
+    }
+
     public void determineDeclarer() {
         int playerIndex = 0;
         int numOfPass = 0;
