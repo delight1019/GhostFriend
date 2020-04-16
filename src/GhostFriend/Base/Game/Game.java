@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    private static final int PLAYER_NUMBER = 2;
+    private static final int PLAYER_NUMBER = 1;
 
     private Rule rule;
     private Deck deck;
@@ -108,11 +108,7 @@ public class Game {
     }
 
     public int getMinContractScore() {
-        if (declarer == null) {
-            return rule.getMinContractScore();
-        } else {
-            return declarer.getContract().getScore();
-        }
+        return rule.getMinContractScore();
     }
 
     public String getCurrentContract() {
