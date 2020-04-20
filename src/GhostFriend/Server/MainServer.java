@@ -79,14 +79,14 @@ public class MainServer {
             }
             else if (game.isDealMissDeclared() == DealMissStatus.OK) {
                 declaringGiruIndex = 0;
-                askGiruDeclaring();
+                askContractDeclaring();
             }
         };
 
         executorService.execute(runnable);
     }
 
-    private void askGiruDeclaring() {
+    private void askContractDeclaring() {
         PlayerInfo playerInfo = playersList.get(declaringGiruIndex);
         broadcast(playerInfo, GameParams.DECLARE_CONTRACT, String.valueOf(game.getMinContractScore()) + GameParams.DATA_DELIMITER + game.getCurrentContract());
         declaringGiruIndex++;
