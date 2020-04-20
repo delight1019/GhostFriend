@@ -88,7 +88,7 @@ public class MainServer {
 
     private void askContractDeclaring() {
         PlayerInfo playerInfo = playersList.get(declaringGiruIndex);
-        broadcast(playerInfo, GameParams.DECLARE_CONTRACT, String.valueOf(game.getMinContractScore()) + GameParams.DATA_DELIMITER + game.getCurrentContract());
+        broadcast(playerInfo, GameParams.ASK_CONTRACT, String.valueOf(game.getMinContractScore()) + GameParams.DATA_DELIMITER + game.getCurrentContract());
         declaringGiruIndex++;
     }
 

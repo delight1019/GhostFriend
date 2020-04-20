@@ -16,5 +16,5 @@ public class GameParams {
     public static final String DISTRIBUTE_CARDS = "DistributesCard";
     public static final String CHECK_DEAL_MISS = "CheckDealMiss";
     public static final String RESTART_GAME = "RestartGame";
-    public static final String DECLARE_CONTRACT = "DeclareContract";
+    public static final String ASK_CONTRACT = "AskContract";
 }
