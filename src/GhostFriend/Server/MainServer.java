@@ -78,18 +78,25 @@ public class MainServer {
                 startPlaying();
             }
             else if (game.isDealMissDeclared() == DealMissStatus.OK) {
-                declaringGiruIndex = 0;
-                askContractDeclaring();
+                game.startContractDeclaration();
             }
         };
 
         executorService.execute(runnable);
     }
 
-    private void askContractDeclaring() {
-        PlayerInfo playerInfo = playersList.get(declaringGiruIndex);
-        broadcast(playerInfo, GameParams.ASK_CONTRACT, String.valueOf(game.getMinContractScore()) + GameParams.DATA_DELIMITER + game.getCurrentContract());
-        declaringGiruIndex++;
+    public void broadcast(Player player, String command, String data) {
+        broadcast(findPlayerInfo(player), command, data);
+    }
+
+    private PlayerInfo findPlayerInfo(Player player) {
+        for (PlayerInfo playerInfo: playersList) {
+            if (player == playerInfo.player) {
+                return playerInfo;
+            }
+        }
+
+        return null;
     }
 
     private void broadcast(PlayerInfo playerInfo, String command, String data) {

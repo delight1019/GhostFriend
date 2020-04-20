@@ -14,7 +14,7 @@ class ContractTest {
     @Test
     void initialize() {
         testContract.declare(CardSuit.SPADE, 15);
-        testContract.Initialize();
+        testContract.initialize();
         assertNull(testContract.getGiru());
         assertEquals(-1, testContract.getScore());
         assertFalse(testContract.getDeclared());

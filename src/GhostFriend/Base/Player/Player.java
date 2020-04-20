@@ -10,6 +10,7 @@ import java.util.List;
 public class Player {
     private String name;
     private DealMissStatus dealMissStatus;
+    private ContractDeclarationStatus contractDeclarationStatus;
 
     public Contract getContract() {
         return contract;
@@ -65,10 +66,17 @@ public class Player {
 
     public void declareContract(CardSuit suit, Integer score) {
         this.contract.declare(suit, score);
+        this.contractDeclarationStatus = ContractDeclarationStatus.DECLARED;
     }
 
     public void declareContract(Contract contract) {
         this.contract.declare(contract);
+        this.contractDeclarationStatus = ContractDeclarationStatus.DECLARED;
+    }
+
+    public void passContractDeclaration() {
+        this.contract.initialize();
+        this.contractDeclarationStatus = ContractDeclarationStatus.PASSED;
     }
 
     public void checkDealMiss(Boolean isDealMissDeclared) {
@@ -91,6 +99,7 @@ public class Player {
     public Player(String name) {
         this.name = name;
         this.dealMissStatus = DealMissStatus.CHECKING;
+        this.contractDeclarationStatus = ContractDeclarationStatus.NOT_DETERMINED;
         this.cardList = new ArrayList<>();
         this.contract = new Contract();
     }

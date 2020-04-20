@@ -8,6 +8,8 @@ public class GameParams {
     // Receive Parameters
     public static final String JOIN_GAME = "JoinGame";
     public static final String REPLY_DEAL_MISS = "ReplyDealMiss";
+    public static final String DECLARE_CONTRACT = "DeclareContract";
+    public static final String PASS_CONTRACT_DECLERATION = "PassContractDecleration";
 
     // Send Parameters
     public static final String JOIN_FAIL = "JoinFail";
@@ -17,4 +19,5 @@ public class GameParams {
     public static final String CHECK_DEAL_MISS = "CheckDealMiss";
     public static final String RESTART_GAME = "RestartGame";
     public static final String ASK_CONTRACT = "AskContract";
+    public static final String CASTER_DECLARED = "CasterDeclared";
 }

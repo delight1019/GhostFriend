@@ -97,6 +97,12 @@ public class ClientControl implements Runnable {
             player.checkDealMiss(Boolean.parseBoolean(data));
             MainServer.getInstance().checkDealMissDeclared();
         }
+        else if (command.equals(GameParams.DECLARE_CONTRACT)) {
+            game.declareContract(player, data);
+        }
+        else if (command.equals(GameParams.PASS_CONTRACT_DECLERATION)) {
+            game.passContractDeclaration(player);
+        }
     }
 
     private void sendCommand(String command, String data) throws IOException {

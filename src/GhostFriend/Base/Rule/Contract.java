@@ -21,7 +21,7 @@ public class Contract {
 
     private Boolean isDeclared;
 
-    public void Initialize() {
+    public void initialize() {
         this.giru = null;
         this.score = -1;
         this.isDeclared = false;
@@ -57,6 +57,6 @@ public class Contract {
     }
 
     public Contract() {
-        Initialize();
+        initialize();
     }
 }

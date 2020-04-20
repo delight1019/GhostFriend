@@ -1,18 +1,21 @@
 package GhostFriend.Base.Game;
 
 import GhostFriend.Base.Card.Card;
+import GhostFriend.Base.Card.CardSuit;
 import GhostFriend.Base.Deck.Deck;
 import GhostFriend.Base.IOController.IOController;
 import GhostFriend.Base.Player.DealMissStatus;
 import GhostFriend.Base.Player.Player;
 import GhostFriend.Base.Rule.ContractValidation;
 import GhostFriend.Base.Rule.Rule;
+import GhostFriend.Server.GameParams;
+import GhostFriend.Server.MainServer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    private static final int PLAYER_NUMBER = 1;
+    private static final int PLAYER_NUMBER = 2;
 
     private Rule rule;
     private Deck deck;
@@ -20,6 +23,7 @@ public class Game {
     private Player declarer;
     private Player friend;
     private int numOfPlayers;
+    private ContractDeclarator contractDeclarator;
 
     public Game() {
         rule = new Rule();
@@ -115,6 +119,34 @@ public class Game {
         return declarer.getContract().toString();
     }
 
+    public void startContractDeclaration() {
+        contractDeclarator = new ContractDeclarator(rule, players);
+        MainServer.getInstance().broadcast(contractDeclarator.getDeclaringPlayer(), GameParams.ASK_CONTRACT, String.valueOf(getMinContractScore()) + GameParams.DATA_DELIMITER + getCurrentContract());
+    }
+
+    public void passContractDeclaration(Player player) {
+        contractDeclarator.passDeclaration(player);
+
+        if (contractDeclarator.isFinished()) {
+            MainServer.getInstance().broadcast(GameParams.CASTER_DECLARED, "");
+        } else {
+            MainServer.getInstance().broadcast(contractDeclarator.getDeclaringPlayer(), GameParams.ASK_CONTRACT, String.valueOf(getMinContractScore()) + GameParams.DATA_DELIMITER + getCurrentContract());
+        }
+    }
+
+    public void declareContract(Player player, String contractData) {
+        //TODO: Need to check whether contract is valid
+        //TODO: Need to increase minimum contract score if any player declared contract
+        String[] contractInfo = contractData.split(GameParams.DATA_DELIMITER);
+        contractDeclarator.declare(player, CardSuit.convertString(contractInfo[0]), Integer.parseInt(contractInfo[1]));
+
+        if (contractDeclarator.isFinished()) {
+            MainServer.getInstance().broadcast(GameParams.CASTER_DECLARED, "");
+        } else {
+            MainServer.getInstance().broadcast(contractDeclarator.getDeclaringPlayer(), GameParams.ASK_CONTRACT, String.valueOf(getMinContractScore()) + GameParams.DATA_DELIMITER + getCurrentContract());
+        }
+    }
+
     public void determineDeclarer() {
         int playerIndex = 0;
         int numOfPass = 0;
@@ -127,7 +159,7 @@ public class Game {
             String userInput = IOController.askBidding(currentPlayer, declarer.getContract());
 
             if (userInput.toUpperCase().equals("PASS")) {
-                currentPlayer.getContract().Initialize();
+                currentPlayer.getContract().initialize();
                 numOfPass++;
             } else {
                 currentPlayer.declareContract(IOController.parseContract(userInput));
