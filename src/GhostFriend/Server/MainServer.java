@@ -61,6 +61,7 @@ public class MainServer {
             synchronized (playersList) {
                 for (PlayerInfo playerInfo : playersList) {
                     broadcast(playerInfo, GameParams.DISTRIBUTE_CARDS, playerInfo.player.getCardListInfo(GameParams.DATA_DELIMITER));
+                    //broadcast(playerInfo, GameParams.CHECK_DEAL_MISS, "True");
                     broadcast(playerInfo, GameParams.CHECK_DEAL_MISS, game.isDealMiss(playerInfo.player).toString());
                 }
             }
@@ -87,7 +88,7 @@ public class MainServer {
 
     private void askGiruDeclaring() {
         PlayerInfo playerInfo = playersList.get(declaringGiruIndex);
-        broadcast(playerInfo, GameParams.ASK_GIRU, String.valueOf(game.getMinContractScore()) + GameParams.DATA_DELIMITER + game.getCurrentContract());
+        broadcast(playerInfo, GameParams.DECLARE_CONTRACT, String.valueOf(game.getMinContractScore()) + GameParams.DATA_DELIMITER + game.getCurrentContract());
         declaringGiruIndex++;
     }
 
