@@ -19,5 +19,6 @@ public class GameParams {
     public static final String CHECK_DEAL_MISS = "CheckDealMiss";
     public static final String RESTART_GAME = "RestartGame";
     public static final String ASK_CONTRACT = "AskContract";
+    public static final String OTHER_PLAYER_ASKING_CONTRACT = "OtherPlayerAskingContract";
     public static final String CASTER_DECLARED = "CasterDeclared";
 }

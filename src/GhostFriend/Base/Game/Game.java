@@ -125,7 +125,7 @@ public class Game {
 
     public void startContractDeclaration() {
         contractDeclarator = new ContractDeclarator(rule, players);
-        MainServer.getInstance().broadcast(contractDeclarator.getDeclaringPlayer(), GameParams.ASK_CONTRACT, String.valueOf(getMinContractScore()) + GameParams.DATA_DELIMITER + getCurrentContract());
+        askContractDeclaring();
     }
 
     public void passContractDeclaration(Player player) {
@@ -134,19 +134,31 @@ public class Game {
         if (contractDeclarator.isFinished()) {
             MainServer.getInstance().broadcast(GameParams.CASTER_DECLARED, "");
         } else {
-            MainServer.getInstance().broadcast(contractDeclarator.getDeclaringPlayer(), GameParams.ASK_CONTRACT, String.valueOf(getMinContractScore()) + GameParams.DATA_DELIMITER + getCurrentContract());
+            askContractDeclaring();
+        }
+    }
+
+    private void askContractDeclaring() {
+        synchronized (players) {
+            for (Player player : players) {
+                if (player == contractDeclarator.getDeclaringPlayer()) {
+                    MainServer.getInstance().broadcast(player, GameParams.ASK_CONTRACT, String.valueOf(getMinContractScore()) + GameParams.DATA_DELIMITER + getCurrentContract());
+                }
+                else {
+                    MainServer.getInstance().broadcast(player, GameParams.OTHER_PLAYER_ASKING_CONTRACT, contractDeclarator.getDeclaringPlayer().getName());
+                }
+            }
         }
     }
 
     public void declareContract(Player player, String contractData) {
-        //TODO: Need to check whether contract is valid
         String[] contractInfo = contractData.split(GameParams.DATA_DELIMITER);
         contractDeclarator.declare(player, CardSuit.convertString(contractInfo[0]), Integer.parseInt(contractInfo[1]));
 
         if (contractDeclarator.isFinished()) {
             MainServer.getInstance().broadcast(GameParams.CASTER_DECLARED, "");
         } else {
-            MainServer.getInstance().broadcast(contractDeclarator.getDeclaringPlayer(), GameParams.ASK_CONTRACT, String.valueOf(getMinContractScore()) + GameParams.DATA_DELIMITER + getCurrentContract());
+            askContractDeclaring();
         }
     }
 
