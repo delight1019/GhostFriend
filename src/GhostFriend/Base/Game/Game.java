@@ -112,7 +112,11 @@ public class Game {
     }
 
     public int getMinContractScore() {
-        return rule.getMinContractScore();
+        if (contractDeclarator.getCurrentContractScore() != -1) {
+            return contractDeclarator.getCurrentContractScore() + 1;
+        } else {
+            return rule.getMinContractScore();
+        }
     }
 
     public String getCurrentContract() {
@@ -136,7 +140,6 @@ public class Game {
 
     public void declareContract(Player player, String contractData) {
         //TODO: Need to check whether contract is valid
-        //TODO: Need to increase minimum contract score if any player declared contract
         String[] contractInfo = contractData.split(GameParams.DATA_DELIMITER);
         contractDeclarator.declare(player, CardSuit.convertString(contractInfo[0]), Integer.parseInt(contractInfo[1]));
 

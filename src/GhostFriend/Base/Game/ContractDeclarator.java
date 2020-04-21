@@ -39,6 +39,14 @@ public class ContractDeclarator {
         return players.get(declaringIndex);
     }
 
+    public int getCurrentContractScore() {
+        if (currentDeclarer != null) {
+            return currentDeclarer.getContract().getScore();
+        } else {
+            return -1;
+        }
+    }
+
     public void passDeclaration(Player player) {
         player.passContractDeclaration();
 
