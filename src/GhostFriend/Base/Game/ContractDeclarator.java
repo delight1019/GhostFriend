@@ -39,14 +39,6 @@ public class ContractDeclarator {
         return players.get(declaringIndex);
     }
 
-    public int getCurrentContractScore() {
-        if (currentDeclarer != null) {
-            return currentDeclarer.getContract().getScore();
-        } else {
-            return -1;
-        }
-    }
-
     public void passDeclaration(Player player) {
         player.passContractDeclaration();
 
@@ -67,6 +59,23 @@ public class ContractDeclarator {
 
     public Player getCurrentDeclarer() {
         return currentDeclarer;
+    }
+
+    public String getCurrentContract(String delimiter) {
+        if (currentDeclarer == null) {
+            return "현재 선언된 공약은 없습니다." + delimiter + getMinContractScore().toString();
+        }
+        else {
+            return "현재 선언된 공약은 " + currentDeclarer.getContract().toString(" ") + "입니다." + delimiter + getMinContractScore().toString();
+        }
+    }
+
+    private Integer getMinContractScore() {
+        if (currentDeclarer == null) {
+            return rule.getMinContractScore();
+        } else {
+            return currentDeclarer.getContract().getScore() + 1;
+        }
     }
 
     public ContractDeclarator(Rule rule, List<Player> players) {

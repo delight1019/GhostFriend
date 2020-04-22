@@ -111,18 +111,6 @@ public class Game {
         }
     }
 
-    public int getMinContractScore() {
-        if (contractDeclarator.getCurrentContractScore() != -1) {
-            return contractDeclarator.getCurrentContractScore() + 1;
-        } else {
-            return rule.getMinContractScore();
-        }
-    }
-
-    public String getCurrentContract() {
-        return declarer.getContract().toString();
-    }
-
     public void startContractDeclaration() {
         contractDeclarator = new ContractDeclarator(rule, players);
         askContractDeclaring();
@@ -142,7 +130,7 @@ public class Game {
         synchronized (players) {
             for (Player player : players) {
                 if (player == contractDeclarator.getDeclaringPlayer()) {
-                    MainServer.getInstance().broadcast(player, GameParams.ASK_CONTRACT, String.valueOf(getMinContractScore()) + GameParams.DATA_DELIMITER + getCurrentContract());
+                    MainServer.getInstance().broadcast(player, GameParams.ASK_CONTRACT, contractDeclarator.getCurrentContract(GameParams.DATA_DELIMITER));
                 }
                 else {
                     MainServer.getInstance().broadcast(player, GameParams.OTHER_PLAYER_ASKING_CONTRACT, contractDeclarator.getDeclaringPlayer().getName());
