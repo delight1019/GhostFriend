@@ -98,10 +98,10 @@ public class ClientControl implements Runnable {
             MainServer.getInstance().checkDealMissDeclared();
         }
         else if (command.equals(GameParams.DECLARE_CONTRACT)) {
-            game.declareContract(player, data);
+            MainServer.getInstance().declareContract(player, data);
         }
         else if (command.equals(GameParams.PASS_CONTRACT_DECLERATION)) {
-            game.passContractDeclaration(player);
+            MainServer.getInstance().passContractDeclaration(player);
         }
     }
 

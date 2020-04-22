@@ -85,6 +85,18 @@ public class MainServer {
         executorService.execute(runnable);
     }
 
+    public void declareContract(Player player, String contractData) {
+        Runnable runnable = () -> game.declareContract(player, contractData);
+
+        executorService.execute(runnable);
+    }
+
+    public void passContractDeclaration(Player player) {
+        Runnable runnable = () -> game.passContractDeclaration(player);
+
+        executorService.execute(runnable);
+    }
+
     public void broadcast(Player player, String command, String data) {
         broadcast(findPlayerInfo(player), command, data);
     }
