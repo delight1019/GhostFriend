@@ -15,6 +15,7 @@ import java.util.List;
 
 public class Game {
     private static final int PLAYER_NUMBER = 2;
+    private static final int DECLARER_ADDITIONAL_CARD_NUM = 3;
 
     private Rule rule;
     private Deck deck;
@@ -120,6 +121,7 @@ public class Game {
 
         if (contractDeclarator.isFinished()) {
             confirmDeclarer(contractDeclarator.getCurrentDeclarer());
+            confirmDeclarerCards();
         } else {
             askContractDeclaring();
         }
@@ -144,6 +146,7 @@ public class Game {
 
         if (contractDeclarator.isFinished()) {
             confirmDeclarer(contractDeclarator.getCurrentDeclarer());
+            confirmDeclarerCards();
         } else {
             askContractDeclaring();
         }
@@ -154,7 +157,24 @@ public class Game {
         MainServer.getInstance().broadcast(GameParams.CASTER_DECLARED, declarer.getContract().toString(GameParams.DATA_DELIMITER));
     }
 
-    public void confirmDeclarerCards() {
+    private void confirmDeclarerCards() {
+        for (int i = 0; i < DECLARER_ADDITIONAL_CARD_NUM; i++) {
+            declarer.receiveCard(deck.drawCard());
+        }
+
+        synchronized (players) {
+            for (Player player : players) {
+                if (player == declarer) {
+                    MainServer.getInstance().broadcast(declarer, GameParams.SELECT_CARDS_TO_DISCARD, declarer.getCardListInfo(GameParams.DATA_DELIMITER));
+                }
+                else {
+                    MainServer.getInstance().broadcast(player, GameParams.START_DECLARER_CARD_SELECTION, "");
+                }
+            }
+        }
+    }
+
+    public void confirmDeclarerCardsOld() {
         IOController.confirmDeclarerCards(declarer);
 
         for (int i = 0; i < 3; i++) {

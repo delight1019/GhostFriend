@@ -21,4 +21,6 @@ public class GameParams {
     public static final String ASK_CONTRACT = "AskContract";
     public static final String OTHER_PLAYER_ASKING_CONTRACT = "OtherPlayerAskingContract";
     public static final String CASTER_DECLARED = "CasterDeclared";
+    public static final String START_DECLARER_CARD_SELECTION = "StartDeclarerCardSelection";
+    public static final String SELECT_CARDS_TO_DISCARD = "SelectCardsToDiscard";
 }
