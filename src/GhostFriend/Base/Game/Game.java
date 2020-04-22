@@ -6,7 +6,6 @@ import GhostFriend.Base.Deck.Deck;
 import GhostFriend.Base.IOController.IOController;
 import GhostFriend.Base.Player.DealMissStatus;
 import GhostFriend.Base.Player.Player;
-import GhostFriend.Base.Rule.ContractValidation;
 import GhostFriend.Base.Rule.Rule;
 import GhostFriend.Server.GameParams;
 import GhostFriend.Server.MainServer;
@@ -153,52 +152,6 @@ public class Game {
     private void confirmDeclarer(Player player) {
         this.declarer = player;
         MainServer.getInstance().broadcast(GameParams.CASTER_DECLARED, declarer.getContract().toString(GameParams.DATA_DELIMITER));
-    }
-
-    public void determineDeclarer() {
-        int playerIndex = 0;
-        int numOfPass = 0;
-
-        IOController.printCurrentMinContractScore(rule.getMinContractScore());
-
-        while (true) {
-            Player currentPlayer = null;
-
-            String userInput = IOController.askBidding(currentPlayer, declarer.getContract());
-
-            if (userInput.toUpperCase().equals("PASS")) {
-                currentPlayer.getContract().initialize();
-                numOfPass++;
-            } else {
-                currentPlayer.declareContract(IOController.parseContract(userInput));
-
-                if (rule.isValidContract(declarer.getContract(), currentPlayer.getContract()) == ContractValidation.VALID) {
-                    declarer = currentPlayer;
-                    numOfPass = 0;
-                } else {
-                    IOController.invalidContract(rule.isValidContract(declarer.getContract(), currentPlayer.getContract()), rule.getMinContractScore());
-                    continue;
-                }
-            }
-
-            playerIndex++;
-
-            if (playerIndex == numOfPlayers) {
-                playerIndex = 0;
-            }
-
-            if ((numOfPass == numOfPlayers - 1) && declarer.getContract().getDeclared()){
-                break;
-            }
-
-            if (numOfPass == numOfPlayers) {
-                rule.decreaseMinContractScore();
-                IOController.printCurrentMinContractScore(rule.getMinContractScore());
-                numOfPass = 0;
-            }
-        }
-
-        IOController.determineDeclarer(declarer);
     }
 
     public void confirmDeclarerCards() {
