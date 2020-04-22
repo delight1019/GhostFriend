@@ -65,6 +65,10 @@ public class ContractDeclarator {
         return ((passNum == players.size() - 1) && (currentDeclarer != null));
     }
 
+    public Player getCurrentDeclarer() {
+        return currentDeclarer;
+    }
+
     public ContractDeclarator(Rule rule, List<Player> players) {
         this.rule = rule;
         this.players = players;

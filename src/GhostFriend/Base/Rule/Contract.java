@@ -43,13 +43,12 @@ public class Contract {
         return (contract.giru != CardSuit.JOKER);
     }
 
-    @Override
-    public String toString() {
+    public String toString(String delimiter) {
         if (this.isDeclared) {
             if (this.giru == null) {
                 return "No giru" + " " + this.score.toString();
             } else {
-                return this.giru.toString() + " " + this.score.toString();
+                return this.giru.toString() + delimiter + this.score.toString();
             }
         } else {
             return "선언되지 않았습니다.";

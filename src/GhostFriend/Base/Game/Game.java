@@ -132,7 +132,7 @@ public class Game {
         contractDeclarator.passDeclaration(player);
 
         if (contractDeclarator.isFinished()) {
-            MainServer.getInstance().broadcast(GameParams.CASTER_DECLARED, "");
+            confirmDeclarer(contractDeclarator.getCurrentDeclarer());
         } else {
             askContractDeclaring();
         }
@@ -156,10 +156,15 @@ public class Game {
         contractDeclarator.declare(player, CardSuit.convertString(contractInfo[0]), Integer.parseInt(contractInfo[1]));
 
         if (contractDeclarator.isFinished()) {
-            MainServer.getInstance().broadcast(GameParams.CASTER_DECLARED, "");
+            confirmDeclarer(contractDeclarator.getCurrentDeclarer());
         } else {
             askContractDeclaring();
         }
+    }
+
+    private void confirmDeclarer(Player player) {
+        this.declarer = player;
+        MainServer.getInstance().broadcast(GameParams.CASTER_DECLARED, declarer.getContract().toString(GameParams.DATA_DELIMITER));
     }
 
     public void determineDeclarer() {
