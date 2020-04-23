@@ -5,13 +5,16 @@ public class GameParams {
     public static final String COMMAND_DELIMITER = "-";
     public static final String COMMAND_DATA_DELIMITER = "_";
 
-    // Receive Parameters
+    // Parameters
+    public static final String NO_CONTRACT = "NoContract";
+
+    // Receive Commands
     public static final String JOIN_GAME = "JoinGame";
     public static final String REPLY_DEAL_MISS = "ReplyDealMiss";
     public static final String DECLARE_CONTRACT = "DeclareContract";
     public static final String PASS_CONTRACT_DECLERATION = "PassContractDecleration";
 
-    // Send Parameters
+    // Send Commands
     public static final String JOIN_FAIL = "JoinFail";
     public static final String JOIN_NEW_PLAYER = "JoinNewPlayer";
     public static final String EXIT_PLAYER = "ExitPlayer";

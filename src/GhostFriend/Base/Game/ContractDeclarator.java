@@ -3,6 +3,7 @@ package GhostFriend.Base.Game;
 import GhostFriend.Base.Card.CardSuit;
 import GhostFriend.Base.Player.Player;
 import GhostFriend.Base.Rule.Rule;
+import GhostFriend.Server.GameParams;
 
 import java.util.List;
 
@@ -63,10 +64,10 @@ public class ContractDeclarator {
 
     public String getCurrentContract(String delimiter) {
         if (currentDeclarer == null) {
-            return "현재 선언된 공약은 없습니다." + delimiter + getMinContractScore().toString();
+            return GameParams.NO_CONTRACT + delimiter + getMinContractScore().toString();
         }
         else {
-            return "현재 선언된 공약은 " + currentDeclarer.getContract().toString(" ") + "입니다." + delimiter + getMinContractScore().toString();
+            return currentDeclarer.getContract().toString(delimiter) + delimiter + getMinContractScore().toString();
         }
     }
 
