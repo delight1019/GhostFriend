@@ -134,7 +134,9 @@ public class Game {
                     MainServer.getInstance().broadcast(player, GameParams.ASK_CONTRACT, contractDeclarator.getCurrentContract(GameParams.DATA_DELIMITER));
                 }
                 else {
-                    MainServer.getInstance().broadcast(player, GameParams.OTHER_PLAYER_ASKING_CONTRACT, contractDeclarator.getDeclaringPlayer().getName());
+                    MainServer.getInstance().broadcast(player, GameParams.OTHER_PLAYER_ASKING_CONTRACT,
+                                                    contractDeclarator.getCurrentContract(GameParams.DATA_DELIMITER) + GameParams.DATA_DELIMITER +
+                                                         contractDeclarator.getDeclaringPlayer().getName());
                 }
             }
         }
