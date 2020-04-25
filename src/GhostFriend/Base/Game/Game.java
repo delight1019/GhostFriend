@@ -105,7 +105,7 @@ public class Game {
         synchronized (players) {
             for (Player player : players) {
                 for (int i = 0; i < Rule.getNumOfCardsPerPerson(); i++) {
-                    player.receiveCard(deck.drawCard());
+                    player.receiveCard(deck.draw());
                 }
             }
         }
@@ -161,7 +161,7 @@ public class Game {
 
     private void confirmDeclarerCards() {
         for (int i = 0; i < DECLARER_ADDITIONAL_CARD_NUM; i++) {
-            declarer.receiveCard(deck.drawCard());
+            declarer.receiveCard(deck.draw());
         }
 
         synchronized (players) {
@@ -180,7 +180,7 @@ public class Game {
         IOController.confirmDeclarerCards(declarer);
 
         for (int i = 0; i < 3; i++) {
-            declarer.receiveCard(deck.drawCard());
+            declarer.receiveCard(deck.draw());
         }
 
         for (int i = 0; i < 3; i++) {

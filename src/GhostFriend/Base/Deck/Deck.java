@@ -26,7 +26,7 @@ public class Deck {
         return cardList;
     }
 
-    public Card drawCard() {
+    public Card draw() {
         Random random = new Random();
         int selectedIndex = random.nextInt(cardList.size());
         Card DrawnCard = cardList.get(selectedIndex);
@@ -37,6 +37,10 @@ public class Deck {
 
     public void returnCard(Card card) {
         this.cardList.add(card);
+    }
+
+    public boolean contains(Card card) {
+        return cardList.contains(card);
     }
 
     public Deck() {
