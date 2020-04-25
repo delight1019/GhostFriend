@@ -196,6 +196,7 @@ public class Game {
 
     public void confirmGiru() {
         rule.setGiru(declarer.getContract().getGiru());
+        MainServer.getInstance().broadcast(GameParams.CONFIRM_CONTRACT, declarer.getContract().toString(GameParams.DATA_DELIMITER));
     }
 
     public void confirmGiru(String giruData) {
@@ -203,34 +204,7 @@ public class Game {
         declarer.declareContract(giru, declarer.getContract().getScore() + 2);
 
         rule.setGiru(declarer.getContract().getGiru());
-    }
-
-    public void confirmDeclarerCardsOld() {
-        IOController.confirmDeclarerCards(declarer);
-
-        for (int i = 0; i < 3; i++) {
-            declarer.receiveCard(deck.draw());
-        }
-
-        for (int i = 0; i < 3; i++) {
-            IOController.checkCards(declarer);
-            Card discardingCard = IOController.askDiscardingCard(declarer);
-
-            while (!declarer.hasCard(discardingCard)) {
-                IOController.doNotHaveCard(discardingCard);
-                IOController.checkCards(declarer);
-                discardingCard = IOController.askDiscardingCard(declarer);
-            }
-
-            declarer.discardCard(discardingCard);
-            deck.returnCard(discardingCard);
-        }
-
-        if (IOController.askGiruChange(declarer, declarer.getContract())) {
-            declarer.declareContract(IOController.askGiruToChange(declarer), declarer.getContract().getScore() + 2);
-        }
-
-        rule.setGiru(declarer.getContract().getGiru());
+        MainServer.getInstance().broadcast(GameParams.CONFIRM_CONTRACT, declarer.getContract().toString(GameParams.DATA_DELIMITER));
     }
 
     public void determineFriend() {

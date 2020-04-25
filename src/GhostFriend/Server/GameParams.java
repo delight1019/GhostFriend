@@ -30,4 +30,5 @@ public class GameParams {
     public static final String START_DECLARER_CARD_SELECTION = "StartDeclarerCardSelection";
     public static final String SELECT_CARDS_TO_DISCARD = "SelectCardsToDiscard";
     public static final String ASK_GIRU_CHANGE = "AskGiruChange";
+    public static final String CONFIRM_CONTRACT = "ConfirmContract";
 }
