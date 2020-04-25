@@ -197,6 +197,8 @@ public class Game {
     public void confirmGiru() {
         rule.setGiru(declarer.getContract().getGiru());
         MainServer.getInstance().broadcast(GameParams.CONFIRM_CONTRACT, declarer.getContract().toString(GameParams.DATA_DELIMITER));
+
+        askFriendCard();
     }
 
     public void confirmGiru(String giruData) {
@@ -206,7 +208,35 @@ public class Game {
         confirmGiru();
     }
 
-    public void determineFriend() {
+    private void askFriendCard() {
+        MainServer.getInstance().broadcast(declarer, GameParams.ASK_FRIEND_CARD, rule.getMighty().toString() + GameParams.DATA_DELIMITER + rule.getJokerCall().toString());
+    }
+
+    public void determineFriend(String cardData) {
+        String[] cardInfo = cardData.split(GameParams.DATA_DELIMITER);
+
+        Card friendCard = new Card(CardSuit.convertString(cardInfo[0]), CardValue.convertString(cardInfo[1]));
+
+        synchronized (players) {
+            for (Player player: players) {
+                if (player.hasCard(friendCard)) {
+                    friend = player;
+                }
+            }
+        }
+
+        synchronized (players) {
+            for (Player player: players) {
+                if (player == friend) {
+                    MainServer.getInstance().broadcast(player, GameParams.NOTIFY_FRIEND, "");
+                }
+
+                MainServer.getInstance().broadcast(player, GameParams.CONFIRM_FRIEND, friendCard.toString());
+            }
+        }
+    }
+
+    public void determineFriendOld() {
         Card friendCard = IOController.askFriendCard(declarer, rule.getMighty(), rule.getJokerCall());
 
         for (int i = 0; i < numOfPlayers; i++) {

@@ -112,6 +112,9 @@ public class ClientControl implements Runnable {
         else if (command.equals(GameParams.CHANGE_GIRU)) {
             game.confirmGiru(data);
         }
+        else if (command.equals(GameParams.DETERMINE_FRIEND)) {
+            game.determineFriend(data);
+        }
     }
 
     private void sendCommand(String command, String data) throws IOException {

@@ -16,6 +16,7 @@ public class GameParams {
     public static final String DISCARD_CARD = "DiscardCard";
     public static final String PASS_GIRU_CHANGE = "PassGiruChange";
     public static final String CHANGE_GIRU = "ChangeGiru";
+    public static final String DETERMINE_FRIEND = "DetermineFriend";
 
     // Send Commands
     public static final String JOIN_FAIL = "JoinFail";
@@ -31,4 +32,7 @@ public class GameParams {
     public static final String SELECT_CARDS_TO_DISCARD = "SelectCardsToDiscard";
     public static final String ASK_GIRU_CHANGE = "AskGiruChange";
     public static final String CONFIRM_CONTRACT = "ConfirmContract";
+    public static final String ASK_FRIEND_CARD = "AskFriendCard";
+    public static final String CONFIRM_FRIEND = "ConfirmFriend";
+    public static final String NOTIFY_FRIEND = "NotifyFriend";
 }
