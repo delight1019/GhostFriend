@@ -203,8 +203,7 @@ public class Game {
         CardSuit giru = CardSuit.convertString(giruData);
         declarer.declareContract(giru, declarer.getContract().getScore() + 2);
 
-        rule.setGiru(declarer.getContract().getGiru());
-        MainServer.getInstance().broadcast(GameParams.CONFIRM_CONTRACT, declarer.getContract().toString(GameParams.DATA_DELIMITER));
+        confirmGiru();
     }
 
     public void determineFriend() {
