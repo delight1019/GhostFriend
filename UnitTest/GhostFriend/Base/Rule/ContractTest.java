@@ -38,12 +38,12 @@ class ContractTest {
 
     @Test
     void testToString() {
-        assertEquals("선언되지 않았습니다.", emptyContract.toString());
+        assertEquals("선언되지 않았습니다.", emptyContract.toString(" "));
 
         testContract.declare(CardSuit.SPADE, 15);
-        assertEquals("SPADE 15", testContract.toString());
+        assertEquals("SPADE 15", testContract.toString(" "));
 
         testContract.declare(null, 18);
-        assertEquals("No giru 18", testContract.toString());
+        assertEquals("No giru 18", testContract.toString(" "));
     }
 }
