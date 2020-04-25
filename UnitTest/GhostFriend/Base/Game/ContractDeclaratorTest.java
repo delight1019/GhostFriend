@@ -45,6 +45,7 @@ class ContractDeclaratorTest {
         assertEquals("SPADE 14", contractDeclarator.getCurrentContract(" "));
         assertEquals(15, contractDeclarator.getMinContractScore());
         assertEquals(playerList.get(0), contractDeclarator.getCurrentDeclarer());
+        assertEquals(playerList.get(1), contractDeclarator.getDeclaringPlayer());
     }
 
     @Test
@@ -61,5 +62,21 @@ class ContractDeclaratorTest {
 
         contractDeclarator.passDeclaration(playerList.get(0));
         assertTrue(contractDeclarator.isFinished());
+    }
+
+    @Test
+    @DisplayName("All pass")
+    public void passAll() {
+        int currentMinScore = contractDeclarator.getMinContractScore();
+
+        contractDeclarator.passDeclaration(playerList.get(0));
+        contractDeclarator.passDeclaration(playerList.get(1));
+        contractDeclarator.passDeclaration(playerList.get(2));
+        contractDeclarator.passDeclaration(playerList.get(3));
+        assertEquals(currentMinScore, contractDeclarator.getMinContractScore());
+
+        contractDeclarator.passDeclaration(playerList.get(4));
+
+        assertEquals(currentMinScore - 1, contractDeclarator.getMinContractScore());
     }
 }
