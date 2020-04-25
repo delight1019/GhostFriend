@@ -26,34 +26,76 @@ class PlayerTest {
         player.receiveCard(card1);
         player.receiveCard(card2);
 
-        assertTrue(player.getCardList().contains(card1));
-        assertTrue(player.getCardList().contains(card2));
+        assertTrue(player.hasCard(card1));
+        assertTrue(player.hasCard(card2));
+
+        player.discardCard(card2);
+        player.discardCard(card1);
+
+        assertFalse(player.hasCard(card1));
+        assertFalse(player.hasCard(card2));
+    }
+
+    @Test
+    void getCardListInfo() {
+        Card card1 = new Card(CardSuit.SPADE, CardValue.ACE);
+        Card card2 = new Card(CardSuit.CLUB, CardValue.SEVEN);
+
+        player.receiveCard(card1);
+        player.receiveCard(card2);
+
+        assertEquals("SPADE ACE/CLUB SEVEN", player.getCardListInfo("/"));
 
         player.discardCard(card1);
         player.discardCard(card2);
-
-        assertFalse(player.getCardList().contains(card1));
-        assertFalse(player.getCardList().contains(card2));
     }
 
     @Test
+    void clearGameInfo() {
+        player.receiveCard(new Card(CardSuit.SPADE, CardValue.ACE));
+        player.checkDealMiss(true);
+
+        assertFalse(player.getCardList().isEmpty());
+        assertNotEquals(DealMissStatus.CHECKING, player.getDealMissStatus());
+
+        player.clearGameInfo();
+
+        assertTrue(player.getCardList().isEmpty());
+        assertEquals(DealMissStatus.CHECKING, player.getDealMissStatus());
+    }
+
+    @Test
+    void checkDealMiss() {
+        player.clearGameInfo();
+        assertEquals(DealMissStatus.CHECKING, player.getDealMissStatus());
+
+        player.checkDealMiss(true);
+        assertEquals(DealMissStatus.MISS, player.getDealMissStatus());
+
+        player.checkDealMiss(false);
+        assertEquals(DealMissStatus.OK, player.getDealMissStatus());
+    }
+
+    @Test
+    @DisplayName("Contract Declaration")
     void declareContract() {
         player.declareContract(CardSuit.SPADE, 15);
-        assertEquals("SPADE 15", player.getContract().toString());
+        assertEquals("SPADE 15", player.getContract().toString(" "));
 
         player.declareContract(null, 18);
-        assertEquals("No giru 18", player.getContract().toString());
-    }
+        assertEquals("No giru 18", player.getContract().toString(" "));
 
-    @Test
-    void declareContract2() {
         Contract contract = new Contract();
         contract.declare(CardSuit.SPADE, 15);
         player.declareContract(contract);
-        assertEquals("SPADE 15", player.getContract().toString());
+
+        assertTrue(player.getContract().isEquals(contract));
 
         contract.declare(null, 15);
         player.declareContract(contract);
-        assertEquals("No giru 15", player.getContract().toString());
+        assertTrue(player.getContract().isEquals(contract));
+
+        player.passContractDeclaration();
+        assertFalse(player.getContract().getDeclared());
     }
 }

@@ -25,9 +25,12 @@ public class Player {
     public String getCardListInfo(String delimiter) {
         StringBuilder stringBuilder = new StringBuilder();
 
-        for (Card card : cardList) {
-            stringBuilder.append(card.toString());
-            stringBuilder.append(delimiter);
+        for (int i = 0; i < cardList.size(); i++) {
+            stringBuilder.append(cardList.get(i).toString());
+
+            if (i != cardList.size() - 1) {
+                stringBuilder.append(delimiter);
+            }
         }
 
         return stringBuilder.toString();
