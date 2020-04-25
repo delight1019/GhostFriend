@@ -7,6 +7,10 @@ public class Contract {
         return giru;
     }
 
+    public boolean isEquals(Contract contract) {
+        return ((this.getGiru() == contract.getGiru()) && (this.getScore() == contract.getScore()));
+    }
+
     private CardSuit giru;
 
     public Integer getScore() {

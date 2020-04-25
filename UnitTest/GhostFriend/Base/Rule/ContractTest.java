@@ -46,4 +46,20 @@ class ContractTest {
         testContract.declare(null, 18);
         assertEquals("No giru 18", testContract.toString(" "));
     }
+
+    @Test
+    void isEquals() {
+        Contract contract = new Contract();
+        contract.declare(CardSuit.SPADE, 15);
+
+        Contract testContract = new Contract();
+        testContract.declare(CardSuit.SPADE, 15);
+        assertTrue(contract.isEquals(testContract));
+
+        contract.declare(CardSuit.SPADE, 17);
+        assertFalse(contract.isEquals(testContract));
+
+        contract.declare(CardSuit.HEART, 15);
+        assertFalse(contract.isEquals(testContract));
+    }
 }
