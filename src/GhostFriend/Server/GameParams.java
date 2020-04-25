@@ -14,6 +14,8 @@ public class GameParams {
     public static final String DECLARE_CONTRACT = "DeclareContract";
     public static final String PASS_CONTRACT_DECLARATION = "PassContractDecleration";
     public static final String DISCARD_CARD = "DiscardCard";
+    public static final String PASS_GIRU_CHANGE = "PassGiruChange";
+    public static final String CHANGE_GIRU = "ChangeGiru";
 
     // Send Commands
     public static final String JOIN_FAIL = "JoinFail";
@@ -27,4 +29,5 @@ public class GameParams {
     public static final String CASTER_DECLARED = "CasterDeclared";
     public static final String START_DECLARER_CARD_SELECTION = "StartDeclarerCardSelection";
     public static final String SELECT_CARDS_TO_DISCARD = "SelectCardsToDiscard";
+    public static final String ASK_GIRU_CHANGE = "AskGiruChange";
 }

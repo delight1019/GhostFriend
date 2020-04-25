@@ -179,7 +179,7 @@ public class Game {
         }
     }
 
-    public void DiscardCard(Player player, String cardData) {
+    public void discardCard(Player player, String cardData) {
         String[] cardInfo = cardData.split(GameParams.DATA_DELIMITER);
 
         Card card = new Card(CardSuit.convertString(cardInfo[0]), CardValue.convertString(cardInfo[1]));
@@ -190,8 +190,19 @@ public class Game {
         if (player.getDiscardedCardNum() < DECLARER_ADDITIONAL_CARD_NUM) {
             MainServer.getInstance().broadcast(declarer, GameParams.SELECT_CARDS_TO_DISCARD, declarer.getCardListInfo(GameParams.DATA_DELIMITER));
         } else {
-
+            MainServer.getInstance().broadcast(declarer, GameParams.ASK_GIRU_CHANGE, declarer.getCardListInfo(GameParams.DATA_DELIMITER));
         }
+    }
+
+    public void confirmGiru() {
+        rule.setGiru(declarer.getContract().getGiru());
+    }
+
+    public void confirmGiru(String giruData) {
+        CardSuit giru = CardSuit.convertString(giruData);
+        declarer.declareContract(giru, declarer.getContract().getScore() + 2);
+
+        rule.setGiru(declarer.getContract().getGiru());
     }
 
     public void confirmDeclarerCardsOld() {

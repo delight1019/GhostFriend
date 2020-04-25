@@ -104,7 +104,13 @@ public class ClientControl implements Runnable {
             MainServer.getInstance().passContractDeclaration(player);
         }
         else if (command.equals(GameParams.DISCARD_CARD)) {
-            game.DiscardCard(player, data);
+            game.discardCard(player, data);
+        }
+        else if (command.equals(GameParams.PASS_GIRU_CHANGE)) {
+            game.confirmGiru();
+        }
+        else if (command.equals(GameParams.CHANGE_GIRU)) {
+            game.confirmGiru(data);
         }
     }
 
