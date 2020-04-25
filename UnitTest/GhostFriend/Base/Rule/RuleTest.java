@@ -3,16 +3,35 @@ package GhostFriend.Base.Rule;
 import GhostFriend.Base.Card.Card;
 import GhostFriend.Base.Card.CardSuit;
 import GhostFriend.Base.Card.CardValue;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class RuleTest {
     private Rule rule = new Rule();
+
+    @Test
+    @DisplayName("Mighty and Jokercall change by giru")
+    void MightyTest() {
+        assertNull(rule.getMighty());
+        assertNull(rule.getJokerCall());
+
+        rule.setGiru(CardSuit.SPADE);
+        assertEquals(CardSuit.DIAMOND, rule.getMighty().getCardSuit());
+        assertEquals(CardValue.ACE, rule.getMighty().getCardValue());
+        assertEquals(CardSuit.CLUB, rule.getJokerCall().getCardSuit());
+        assertEquals(CardValue.THREE, rule.getJokerCall().getCardValue());
+
+        rule.setGiru(CardSuit.CLUB);
+        assertEquals(CardSuit.SPADE, rule.getMighty().getCardSuit());
+        assertEquals(CardValue.ACE, rule.getMighty().getCardValue());
+        assertEquals(CardSuit.HEART, rule.getJokerCall().getCardSuit());
+        assertEquals(CardValue.THREE, rule.getJokerCall().getCardValue());
+    }
 
     @Test
     void getNumOfCardsPerPerson() {

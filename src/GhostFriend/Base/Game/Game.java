@@ -201,8 +201,7 @@ public class Game {
             declarer.declareContract(IOController.askGiruToChange(declarer), declarer.getContract().getScore() + 2);
         }
 
-        rule.setMighty(declarer.getContract().getGiru());
-        rule.setJokerCall(declarer.getContract().getGiru());
+        rule.setGiru(declarer.getContract().getGiru());
     }
 
     public void determineFriend() {

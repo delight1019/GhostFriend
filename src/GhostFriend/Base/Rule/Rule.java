@@ -16,13 +16,20 @@ public class Rule {
 
     private Integer minContractScore;
 
+    public void setGiru(CardSuit giru) {
+        setMighty(giru);
+        setJokerCall(giru);
+    }
+
     public Card getMighty() {
         return Mighty;
     }
 
-    public void setMighty(CardSuit giru) {
+    private void setMighty(CardSuit giru) {
         if (giru == CardSuit.SPADE) {
             Mighty = new Card(CardSuit.DIAMOND, CardValue.ACE);
+        } else {
+            Mighty = new Card(CardSuit.SPADE, CardValue.ACE);
         }
     }
 
@@ -30,9 +37,11 @@ public class Rule {
         return JokerCall;
     }
 
-    public void setJokerCall(CardSuit giru) {
+    private void setJokerCall(CardSuit giru) {
         if (giru == CardSuit.CLUB) {
             JokerCall = new Card(CardSuit.HEART, CardValue.THREE);
+        } else {
+            JokerCall = new Card(CardSuit.CLUB, CardValue.THREE);
         }
     }
 
@@ -95,8 +104,6 @@ public class Rule {
     }
 
     public Rule() {
-        this.Mighty = new Card(CardSuit.SPADE, CardValue.ACE);
-        this.JokerCall = new Card(CardSuit.CLUB, CardValue.THREE);
         this.minContractScore = 13;
     }
 
