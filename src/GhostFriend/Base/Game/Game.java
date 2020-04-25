@@ -131,11 +131,13 @@ public class Game {
         synchronized (players) {
             for (Player player : players) {
                 if (player == contractDeclarator.getDeclaringPlayer()) {
-                    MainServer.getInstance().broadcast(player, GameParams.ASK_CONTRACT, contractDeclarator.getCurrentContract(GameParams.DATA_DELIMITER));
+                    MainServer.getInstance().broadcast(player, GameParams.ASK_CONTRACT,
+                                                       contractDeclarator.getCurrentContract(GameParams.DATA_DELIMITER) + GameParams.DATA_DELIMITER + contractDeclarator.getMinContractScore().toString());
                 }
                 else {
                     MainServer.getInstance().broadcast(player, GameParams.OTHER_PLAYER_ASKING_CONTRACT,
                                                     contractDeclarator.getCurrentContract(GameParams.DATA_DELIMITER) + GameParams.DATA_DELIMITER +
+                                                         contractDeclarator.getMinContractScore().toString() + GameParams.DATA_DELIMITER +
                                                          contractDeclarator.getDeclaringPlayer().getName());
                 }
             }

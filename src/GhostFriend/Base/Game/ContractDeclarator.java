@@ -64,14 +64,14 @@ public class ContractDeclarator {
 
     public String getCurrentContract(String delimiter) {
         if (currentDeclarer == null) {
-            return GameParams.NO_CONTRACT + delimiter + getMinContractScore().toString();
+            return GameParams.NO_CONTRACT;
         }
         else {
-            return currentDeclarer.getContract().toString(delimiter) + delimiter + getMinContractScore().toString();
+            return currentDeclarer.getContract().toString(delimiter);
         }
     }
 
-    private Integer getMinContractScore() {
+    public Integer getMinContractScore() {
         if (currentDeclarer == null) {
             return rule.getMinContractScore();
         } else {
