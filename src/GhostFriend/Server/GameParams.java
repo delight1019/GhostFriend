@@ -12,7 +12,7 @@ public class GameParams {
     public static final String JOIN_GAME = "JoinGame";
     public static final String REPLY_DEAL_MISS = "ReplyDealMiss";
     public static final String DECLARE_CONTRACT = "DeclareContract";
-    public static final String PASS_CONTRACT_DECLERATION = "PassContractDecleration";
+    public static final String PASS_CONTRACT_DECLARATION = "PassContractDecleration";
 
     // Send Commands
     public static final String JOIN_FAIL = "JoinFail";

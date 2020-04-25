@@ -100,7 +100,7 @@ public class ClientControl implements Runnable {
         else if (command.equals(GameParams.DECLARE_CONTRACT)) {
             MainServer.getInstance().declareContract(player, data);
         }
-        else if (command.equals(GameParams.PASS_CONTRACT_DECLERATION)) {
+        else if (command.equals(GameParams.PASS_CONTRACT_DECLARATION)) {
             MainServer.getInstance().passContractDeclaration(player);
         }
     }
