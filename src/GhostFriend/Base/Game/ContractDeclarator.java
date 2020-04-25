@@ -51,6 +51,7 @@ public class ContractDeclarator {
         player.declareContract(giru, score);
         currentDeclarer = player;
 
+        passNum = 0;
         setNextPlayer();
     }
 
