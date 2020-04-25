@@ -103,6 +103,9 @@ public class ClientControl implements Runnable {
         else if (command.equals(GameParams.PASS_CONTRACT_DECLARATION)) {
             MainServer.getInstance().passContractDeclaration(player);
         }
+        else if (command.equals(GameParams.DISCARD_CARD)) {
+            game.DiscardCard(player, data);
+        }
     }
 
     private void sendCommand(String command, String data) throws IOException {

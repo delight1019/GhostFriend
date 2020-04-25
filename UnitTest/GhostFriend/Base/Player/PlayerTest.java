@@ -34,6 +34,7 @@ class PlayerTest {
 
         assertFalse(player.hasCard(card1));
         assertFalse(player.hasCard(card2));
+        assertEquals(2, player.getDiscardedCardNum());
     }
 
     @Test

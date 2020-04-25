@@ -11,6 +11,7 @@ public class Player {
     private String name;
     private DealMissStatus dealMissStatus;
     private ContractDeclarationStatus contractDeclarationStatus;
+    private int discardedCardNum;
 
     public Contract getContract() {
         return contract;
@@ -55,6 +56,7 @@ public class Player {
         }
 
         this.cardList.remove(card);
+        discardedCardNum++;
     }
 
     public Boolean hasCard(Card card) {
@@ -99,12 +101,17 @@ public class Player {
         return this.dealMissStatus;
     }
 
+    public int getDiscardedCardNum() {
+        return discardedCardNum;
+    }
+
     public Player(String name) {
         this.name = name;
         this.dealMissStatus = DealMissStatus.CHECKING;
         this.contractDeclarationStatus = ContractDeclarationStatus.NOT_DETERMINED;
         this.cardList = new ArrayList<>();
         this.contract = new Contract();
+        this.discardedCardNum = 0;
     }
 
 }

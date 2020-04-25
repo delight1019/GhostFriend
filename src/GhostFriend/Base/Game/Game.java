@@ -2,6 +2,7 @@ package GhostFriend.Base.Game;
 
 import GhostFriend.Base.Card.Card;
 import GhostFriend.Base.Card.CardSuit;
+import GhostFriend.Base.Card.CardValue;
 import GhostFriend.Base.Deck.Deck;
 import GhostFriend.Base.IOController.IOController;
 import GhostFriend.Base.Player.DealMissStatus;
@@ -158,7 +159,7 @@ public class Game {
 
     private void confirmDeclarer(Player player) {
         this.declarer = player;
-        MainServer.getInstance().broadcast(GameParams.CASTER_DECLARED, declarer.getContract().toString(GameParams.DATA_DELIMITER));
+        MainServer.getInstance().broadcast(GameParams.CASTER_DECLARED, declarer.getName() + GameParams.DATA_DELIMITER + declarer.getContract().toString(GameParams.DATA_DELIMITER));
     }
 
     private void confirmDeclarerCards() {
@@ -175,6 +176,21 @@ public class Game {
                     MainServer.getInstance().broadcast(player, GameParams.START_DECLARER_CARD_SELECTION, "");
                 }
             }
+        }
+    }
+
+    public void DiscardCard(Player player, String cardData) {
+        String[] cardInfo = cardData.split(GameParams.DATA_DELIMITER);
+
+        Card card = new Card(CardSuit.convertString(cardInfo[0]), CardValue.convertString(cardInfo[1]));
+
+        player.discardCard(card);
+        deck.returnCard(card);
+
+        if (player.getDiscardedCardNum() < DECLARER_ADDITIONAL_CARD_NUM) {
+            MainServer.getInstance().broadcast(declarer, GameParams.SELECT_CARDS_TO_DISCARD, declarer.getCardListInfo(GameParams.DATA_DELIMITER));
+        } else {
+
         }
     }
 
