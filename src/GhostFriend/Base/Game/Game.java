@@ -190,7 +190,8 @@ public class Game {
         if (player.getDiscardedCardNum() < DECLARER_ADDITIONAL_CARD_NUM) {
             MainServer.getInstance().broadcast(declarer, GameParams.SELECT_CARDS_TO_DISCARD, declarer.getCardListInfo(GameParams.DATA_DELIMITER));
         } else {
-            MainServer.getInstance().broadcast(declarer, GameParams.ASK_GIRU_CHANGE, declarer.getCardListInfo(GameParams.DATA_DELIMITER));
+            MainServer.getInstance().broadcast(declarer, GameParams.UPDATE_CARD_LIST, declarer.getCardListInfo(GameParams.DATA_DELIMITER));
+            MainServer.getInstance().broadcast(declarer, GameParams.ASK_GIRU_CHANGE, "");
         }
     }
 
