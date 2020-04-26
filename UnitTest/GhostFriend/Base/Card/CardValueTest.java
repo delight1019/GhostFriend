@@ -26,4 +26,9 @@ class CardValueTest {
         assertEquals(CardValue.KING, CardValue.convertString("king"));
         assertNull(CardValue.convertString("joker"));
     }
+
+    @Test
+    void toInteger() {
+        assertEquals(2, CardValue.toInteger(CardValue.TWO));
+    }
 }
