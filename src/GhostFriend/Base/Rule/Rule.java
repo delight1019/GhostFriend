@@ -9,6 +9,7 @@ import java.util.List;
 public class Rule {
     private Card Mighty;
     private Card JokerCall;
+    private CardSuit giru;
 
     public Integer getMinContractScore() {
         return minContractScore;
@@ -17,6 +18,7 @@ public class Rule {
     private Integer minContractScore;
 
     public void setGiru(CardSuit giru) {
+        this.giru = giru;
         setMighty(giru);
         setJokerCall(giru);
     }
@@ -45,12 +47,44 @@ public class Rule {
         }
     }
 
-    private Integer getScore(Card card) {
+    public Integer getScore(Card card) {
         if (card.IsScoreCard()) {
             return 1;
         } else {
             return 0;
         }
+    }
+
+    public boolean isWinnerCard(Card currentWinnerCard, Card submittedCard) {
+        if (submittedCard == Mighty) {
+            return true;
+        }
+
+        if (currentWinnerCard == Mighty) {
+            return false;
+        }
+
+        if (submittedCard.equals(new Card(CardSuit.JOKER, CardValue.JOKER))) {
+            return true;
+        }
+
+        if (currentWinnerCard.equals(new Card(CardSuit.JOKER, CardValue.JOKER))) {
+            return true;
+        }
+
+        if ((currentWinnerCard.getCardSuit() == giru) && (submittedCard.getCardSuit() == giru)) {
+            return (CardValue.toInteger(submittedCard.getCardValue()) > CardValue.toInteger(currentWinnerCard.getCardValue()));
+        }
+
+        if (submittedCard.getCardSuit() == giru) {
+            return true;
+        }
+
+        if (currentWinnerCard.getCardSuit() == giru) {
+            return false;
+        }
+
+        return (CardValue.toInteger(submittedCard.getCardValue()) > CardValue.toInteger(currentWinnerCard.getCardValue()));
     }
 
     private double getDealScore(Card card) {

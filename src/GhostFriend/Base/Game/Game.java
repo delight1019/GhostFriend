@@ -251,6 +251,24 @@ public class Game {
         gameController.submitCard(player, submittedCard);
 
         BroadcastCardSubmission(player.getName(), submittedCard);
+
+        if (gameController.isPhaseFinished()) {
+            Player winner = gameController.getWinner();
+            Integer phaseScore = gameController.getPhaseScore();
+
+            MainServer.getInstance().broadcast(GameParams.NOTIFY_PHASE_WINNER, winner.getName() + GameParams.DATA_DELIMITER + phaseScore.toString());
+
+            if (gameController.isAllPhaseFinished()) {
+
+            }
+            else {
+                gameController.clearPhase();
+                MainServer.getInstance().broadcast(gameController.getCurrentPlayer(), GameParams.ASK_CARD, "");
+            }
+        }
+        else {
+            MainServer.getInstance().broadcast(gameController.getCurrentPlayer(), GameParams.ASK_CARD, "");
+        }
     }
 
     private void BroadcastCardSubmission(String playerName, Card card) {

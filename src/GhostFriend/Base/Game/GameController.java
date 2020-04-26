@@ -12,6 +12,8 @@ public class GameController {
     private Player declarer;
     private Player friend;
     private Player currentPlayer;
+    private Player winner;
+    private int currentPhaseScore;
 
     public Player getCurrentPlayer() {
         return currentPlayer;
@@ -30,7 +32,44 @@ public class GameController {
 
     public void submitCard(Player player, Card card) {
         player.submitCard(card);
+        setWinner(player);
+
+        currentPhaseScore += rule.getScore(player.getSubmittedCard());
+
         setNextPlayer(player);
+    }
+
+    private void setWinner(Player player) {
+        if (rule.isWinnerCard(winner.getSubmittedCard(), player.getSubmittedCard())) {
+            winner = player;
+        }
+    }
+
+    public boolean isPhaseFinished() {
+        boolean isFinished = true;
+
+        for (Player player : players) {
+            isFinished = isFinished & (player.isSubmitted());
+        }
+
+        return isFinished;
+    }
+
+    public Player getWinner() {
+        return winner;
+    }
+
+    public int getPhaseScore() {
+        return currentPhaseScore;
+    }
+
+    public boolean isAllPhaseFinished() {
+        return (winner.getCardList().isEmpty());
+    }
+
+    public void clearPhase() {
+        currentPlayer = winner;
+        currentPhaseScore = 0;
     }
 
     public GameController(List<Player> players, Rule rule, Player declarer, Player friend) {
@@ -39,5 +78,7 @@ public class GameController {
         this.declarer = declarer;
         this.friend = friend;
         this.currentPlayer = declarer;
+        this.winner = declarer;
+        this.currentPhaseScore = 0;
     }
 }

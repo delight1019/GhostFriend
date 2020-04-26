@@ -72,6 +72,14 @@ public class Player {
         this.cardList.remove(card);
     }
 
+    public boolean isSubmitted() {
+        return (submittedCard != null);
+    }
+
+    public Card getSubmittedCard() {
+        return submittedCard;
+    }
+
     public Boolean hasCard(Card card) {
         for (Card checkingCard : this.cardList) {
             if (checkingCard.equals(card)) {

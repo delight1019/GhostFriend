@@ -39,4 +39,5 @@ public class GameParams {
     public static final String START_PLAYING = "StartPlaying";
     public static final String ASK_CARD = "AskCard";
     public static final String NOTIFY_CARD_SUBMISSION = "NotifyCardSubmission";
+    public static final String NOTIFY_PHASE_WINNER = "NotifyPhaseWinner";
 }
