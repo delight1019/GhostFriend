@@ -12,6 +12,7 @@ public class Player {
     private DealMissStatus dealMissStatus;
     private ContractDeclarationStatus contractDeclarationStatus;
     private int discardedCardNum;
+    private Card submittedCard;
 
     public Contract getContract() {
         return contract;
@@ -57,6 +58,18 @@ public class Player {
 
         this.cardList.remove(card);
         discardedCardNum++;
+    }
+
+    public void submitCard(Card card) {
+        for (Card checkingCard : this.cardList) {
+            if (checkingCard.equals(card)) {
+                card = checkingCard;
+                break;
+            }
+        }
+
+        submittedCard = card;
+        this.cardList.remove(card);
     }
 
     public Boolean hasCard(Card card) {

@@ -102,9 +102,11 @@ public class MainServer {
     }
 
     private PlayerInfo findPlayerInfo(Player player) {
-        for (PlayerInfo playerInfo: playersList) {
-            if (player == playerInfo.player) {
-                return playerInfo;
+        synchronized (playersList) {
+            for (PlayerInfo playerInfo: playersList) {
+                if (player == playerInfo.player) {
+                    return playerInfo;
+                }
             }
         }
 

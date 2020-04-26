@@ -24,6 +24,7 @@ public class Game {
     private Player friend;
     private int numOfPlayers;
     private ContractDeclarator contractDeclarator;
+    private GameController gameController;
 
     public Game() {
         rule = new Rule();
@@ -232,6 +233,30 @@ public class Game {
 
                 MainServer.getInstance().broadcast(player, GameParams.CONFIRM_FRIEND, friendCard.toString());
                 MainServer.getInstance().broadcast(player, GameParams.START_PLAYING, "");
+            }
+        }
+
+        startPlaying();
+    }
+
+    private void startPlaying() {
+        gameController = new GameController(players, rule, declarer, friend);
+        MainServer.getInstance().broadcast(gameController.getCurrentPlayer(), GameParams.ASK_CARD, "");
+    }
+
+    public void submitCard(Player player, String cardData) {
+        String[] cardInfo = cardData.split(GameParams.DATA_DELIMITER);
+        Card submittedCard = new Card(CardSuit.convertString(cardInfo[0]), CardValue.convertString(cardInfo[1]));
+
+        gameController.submitCard(player, submittedCard);
+
+        BroadcastCardSubmission(player.getName(), submittedCard);
+    }
+
+    private void BroadcastCardSubmission(String playerName, Card card) {
+        synchronized (players) {
+            for (Player player: players) {
+                MainServer.getInstance().broadcast(player, GameParams.NOTIFY_CARD_SUBMISSION, playerName + GameParams.DATA_DELIMITER + card.toString());
             }
         }
     }
