@@ -35,4 +35,5 @@ public class GameParams {
     public static final String ASK_FRIEND_CARD = "AskFriendCard";
     public static final String CONFIRM_FRIEND = "ConfirmFriend";
     public static final String NOTIFY_FRIEND = "NotifyFriend";
+    public static final String START_PLAYING = "StartPlaying";
 }

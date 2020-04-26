@@ -4,7 +4,6 @@ import GhostFriend.Base.Card.Card;
 import GhostFriend.Base.Card.CardSuit;
 import GhostFriend.Base.Card.CardValue;
 import GhostFriend.Base.Deck.Deck;
-import GhostFriend.Base.IOController.IOController;
 import GhostFriend.Base.Player.DealMissStatus;
 import GhostFriend.Base.Player.Player;
 import GhostFriend.Base.Rule.Rule;
@@ -232,20 +231,7 @@ public class Game {
                 }
 
                 MainServer.getInstance().broadcast(player, GameParams.CONFIRM_FRIEND, friendCard.toString());
-            }
-        }
-    }
-
-    public void determineFriendOld() {
-        Card friendCard = IOController.askFriendCard(declarer, rule.getMighty(), rule.getJokerCall());
-
-        for (int i = 0; i < numOfPlayers; i++) {
-            Player currentPlayer = null;
-
-            if (currentPlayer != declarer) {
-                if (currentPlayer.hasCard(friendCard)) {
-                    friend = currentPlayer;
-                }
+                MainServer.getInstance().broadcast(player, GameParams.START_PLAYING, "");
             }
         }
     }

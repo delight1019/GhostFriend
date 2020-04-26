@@ -7,10 +7,5 @@ public class Main {
 
         ServerWrapper serverWrapper = new ServerWrapper();
         serverWrapper.startServer();
-//        Game Game = new Game();
-//        Game.StartPlaying(5);
-//        Game.determineDeclarer();
-//        Game.confirmDeclarerCards();
-//        Game.determineFriend();
     }
 }
