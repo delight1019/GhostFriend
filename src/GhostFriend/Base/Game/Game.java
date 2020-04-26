@@ -250,6 +250,8 @@ public class Game {
 
         gameController.submitCard(player, submittedCard);
 
+        MainServer.getInstance().broadcast(player, GameParams.UPDATE_CARD_LIST, player.getCardListInfo(GameParams.DATA_DELIMITER));
+
         BroadcastCardSubmission(player.getName(), submittedCard);
 
         if (gameController.isPhaseFinished()) {
