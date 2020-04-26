@@ -3,6 +3,7 @@ package GhostFriend.Base.Rule;
 import GhostFriend.Base.Card.Card;
 import GhostFriend.Base.Card.CardSuit;
 import GhostFriend.Base.Card.CardValue;
+import GhostFriend.Base.Player.Player;
 
 import java.util.List;
 
@@ -53,6 +54,10 @@ public class Rule {
         } else {
             return 0;
         }
+    }
+
+    public boolean isWinner(Player declarer) {
+        return (declarer.getScore() >= declarer.getContract().getScore());
     }
 
     public boolean isWinnerCard(Card currentWinnerCard, Card submittedCard) {

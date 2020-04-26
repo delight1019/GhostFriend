@@ -7,6 +7,8 @@ public class GameParams {
 
     // Parameters
     public static final String NO_CONTRACT = "NoContract";
+    public static final String DECLARER_WIN = "DeclarerWin";
+    public static final String DECLARER_LOSE = "DeclarerLose";
 
     // Receive Commands
     public static final String JOIN_GAME = "JoinGame";
@@ -41,4 +43,5 @@ public class GameParams {
     public static final String NOTIFY_CARD_SUBMISSION = "NotifyCardSubmission";
     public static final String NOTIFY_PHASE_WINNER = "NotifyPhaseWinner";
     public static final String UPDATE_CARD_LIST = "UpdateCardList";
+    public static final String NOTIFY_GAME_WINNER = "NotifyGameWinner";
 }

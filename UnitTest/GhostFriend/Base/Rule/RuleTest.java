@@ -3,6 +3,7 @@ package GhostFriend.Base.Rule;
 import GhostFriend.Base.Card.Card;
 import GhostFriend.Base.Card.CardSuit;
 import GhostFriend.Base.Card.CardValue;
+import GhostFriend.Base.Player.Player;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -84,7 +85,7 @@ class RuleTest {
     }
 
     @Test
-    @DisplayName("Winner Determination")
+    @DisplayName("Phase Winner Determination")
     void isWinner() {
         rule.setGiru(CardSuit.CLUB);
 
@@ -104,5 +105,17 @@ class RuleTest {
     void getScore() {
         assertEquals(1, rule.getScore(new Card(CardSuit.CLUB, CardValue.JACK)));
         assertEquals(0, rule.getScore(new Card(CardSuit.CLUB, CardValue.THREE)));
+    }
+
+    @Test
+    @DisplayName("Game Winner Determination")
+    void isGameWinner() {
+        Player declarar = new Player("Tester");
+        declarar.declareContract(CardSuit.SPADE, 15);
+        declarar.increaseScore(13);
+        assertFalse(rule.isWinner(declarar));
+
+        declarar.increaseScore(2);
+        assertTrue(rule.isWinner(declarar));
     }
 }

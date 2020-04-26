@@ -264,7 +264,7 @@ public class Game {
             MainServer.getInstance().broadcast(GameParams.NOTIFY_PHASE_WINNER, winner.getName() + GameParams.DATA_DELIMITER + phaseScore.toString());
 
             if (gameController.isAllPhaseFinished()) {
-
+                NotifyGameWinner();
             }
             else {
                 gameController.clearPhase();
@@ -281,6 +281,15 @@ public class Game {
             for (Player player: players) {
                 MainServer.getInstance().broadcast(player, GameParams.NOTIFY_CARD_SUBMISSION, playerName + GameParams.DATA_DELIMITER + card.toString());
             }
+        }
+    }
+
+    private void NotifyGameWinner() {
+        if (rule.isWinner(declarer)) {
+            MainServer.getInstance().broadcast(GameParams.NOTIFY_GAME_WINNER, GameParams.DECLARER_WIN + GameParams.DATA_DELIMITER + friend.getName());
+        }
+        else {
+            MainServer.getInstance().broadcast(GameParams.NOTIFY_GAME_WINNER, GameParams.DECLARER_LOSE + GameParams.DATA_DELIMITER + friend.getName());
         }
     }
 }
