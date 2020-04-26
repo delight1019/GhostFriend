@@ -99,4 +99,24 @@ class PlayerTest {
         player.passContractDeclaration();
         assertFalse(player.getContract().getDeclared());
     }
+
+    @Test
+    @DisplayName("Card Submission")
+    void submitCard() {
+        Card card1 = new Card(CardSuit.SPADE, CardValue.THREE);
+        Card card2 = new Card(CardSuit.HEART, CardValue.ACE);
+        player.receiveCard(card1);
+        player.receiveCard(card2);
+
+        assertFalse(player.isSubmitted());
+
+        player.submitCard(card2);
+
+        assertTrue(player.isSubmitted());
+        assertFalse(player.hasCard(card2));
+        assertEquals(card2, player.getSubmittedCard());
+
+        player.discardCard(card1);
+        player.discardCard(card2);
+    }
 }
