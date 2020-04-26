@@ -82,4 +82,27 @@ class RuleTest {
         cardList.add(new Card(CardSuit.SPADE, CardValue.SIX));
         assertTrue(rule.isDealMiss(cardList));
     }
+
+    @Test
+    @DisplayName("Winner Determination")
+    void isWinner() {
+        rule.setGiru(CardSuit.CLUB);
+
+        assertTrue(rule.isWinnerCard(new Card(CardSuit.JOKER, CardValue.JOKER), new Card(CardSuit.SPADE, CardValue.ACE)));
+        assertFalse(rule.isWinnerCard(new Card(CardSuit.SPADE, CardValue.ACE), new Card(CardSuit.CLUB, CardValue.ACE)));
+        assertFalse(rule.isWinnerCard(new Card(CardSuit.JOKER, CardValue.JOKER), new Card(CardSuit.CLUB, CardValue.ACE)));
+        assertTrue(rule.isWinnerCard(new Card(CardSuit.CLUB, CardValue.ACE), new Card(CardSuit.JOKER, CardValue.JOKER)));
+        assertTrue(rule.isWinnerCard(new Card(CardSuit.CLUB, CardValue.THREE), new Card(CardSuit.CLUB, CardValue.ACE)));
+        assertFalse(rule.isWinnerCard(new Card(CardSuit.CLUB, CardValue.JACK), new Card(CardSuit.CLUB, CardValue.FIVE)));
+        assertTrue(rule.isWinnerCard(new Card(CardSuit.DIAMOND, CardValue.JACK), new Card(CardSuit.CLUB, CardValue.FIVE)));
+        assertFalse(rule.isWinnerCard(new Card(CardSuit.CLUB, CardValue.JACK), new Card(CardSuit.HEART, CardValue.FIVE)));
+        assertTrue(rule.isWinnerCard(new Card(CardSuit.HEART, CardValue.THREE), new Card(CardSuit.HEART, CardValue.FIVE)));
+        assertFalse(rule.isWinnerCard(new Card(CardSuit.HEART, CardValue.KING), new Card(CardSuit.SPADE, CardValue.TEN)));
+    }
+
+    @Test
+    void getScore() {
+        assertEquals(1, rule.getScore(new Card(CardSuit.CLUB, CardValue.JACK)));
+        assertEquals(0, rule.getScore(new Card(CardSuit.CLUB, CardValue.THREE)));
+    }
 }

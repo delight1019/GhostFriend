@@ -56,11 +56,11 @@ public class Rule {
     }
 
     public boolean isWinnerCard(Card currentWinnerCard, Card submittedCard) {
-        if (submittedCard == Mighty) {
+        if (submittedCard.equals(Mighty)) {
             return true;
         }
 
-        if (currentWinnerCard == Mighty) {
+        if (currentWinnerCard.equals(Mighty)) {
             return false;
         }
 
@@ -69,7 +69,7 @@ public class Rule {
         }
 
         if (currentWinnerCard.equals(new Card(CardSuit.JOKER, CardValue.JOKER))) {
-            return true;
+            return false;
         }
 
         if ((currentWinnerCard.getCardSuit() == giru) && (submittedCard.getCardSuit() == giru)) {
@@ -81,6 +81,10 @@ public class Rule {
         }
 
         if (currentWinnerCard.getCardSuit() == giru) {
+            return false;
+        }
+
+        if (currentWinnerCard.getCardSuit() != submittedCard.getCardSuit()) {
             return false;
         }
 
