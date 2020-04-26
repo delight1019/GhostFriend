@@ -13,6 +13,7 @@ public class Player {
     private ContractDeclarationStatus contractDeclarationStatus;
     private int discardedCardNum;
     private Card submittedCard;
+    private int score;
 
     public Contract getContract() {
         return contract;
@@ -126,6 +127,14 @@ public class Player {
         return discardedCardNum;
     }
 
+    public void increaseScore(int phaseScore) {
+        this.score += phaseScore;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
     public Player(String name) {
         this.name = name;
         this.dealMissStatus = DealMissStatus.CHECKING;
@@ -133,6 +142,7 @@ public class Player {
         this.cardList = new ArrayList<>();
         this.contract = new Contract();
         this.discardedCardNum = 0;
+        this.score = 0;
     }
 
 }

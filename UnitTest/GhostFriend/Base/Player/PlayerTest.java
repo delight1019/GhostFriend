@@ -119,4 +119,13 @@ class PlayerTest {
         player.discardCard(card1);
         player.discardCard(card2);
     }
+
+    @Test
+    @DisplayName("Score")
+    void score() {
+        assertEquals(0, player.getScore());
+
+        player.increaseScore(3);
+        assertEquals(3, player.getScore());
+    }
 }

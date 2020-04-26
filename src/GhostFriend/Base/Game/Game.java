@@ -259,6 +259,8 @@ public class Game {
             Player winner = gameController.getWinner();
             Integer phaseScore = gameController.getPhaseScore();
 
+            winner.increaseScore(phaseScore);
+
             MainServer.getInstance().broadcast(GameParams.NOTIFY_PHASE_WINNER, winner.getName() + GameParams.DATA_DELIMITER + phaseScore.toString());
 
             if (gameController.isAllPhaseFinished()) {
