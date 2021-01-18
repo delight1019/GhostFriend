@@ -70,6 +70,10 @@ public class GameController {
     public void clearPhase() {
         currentPlayer = winner;
         currentPhaseScore = 0;
+
+        for (Player player : players) {
+            player.clearSubmission();
+        }
     }
 
     public GameController(List<Player> players, Rule rule, Player declarer, Player friend) {

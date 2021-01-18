@@ -135,6 +135,10 @@ public class Player {
         return score;
     }
 
+    public void clearSubmission() {
+        submittedCard = null;
+    }
+
     public Player(String name) {
         this.name = name;
         this.dealMissStatus = DealMissStatus.CHECKING;

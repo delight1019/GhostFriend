@@ -116,8 +116,8 @@ class PlayerTest {
         assertFalse(player.hasCard(card2));
         assertEquals(card2, player.getSubmittedCard());
 
-        player.discardCard(card1);
-        player.discardCard(card2);
+        player.clearSubmission();
+        assertFalse(player.isSubmitted());
     }
 
     @Test
