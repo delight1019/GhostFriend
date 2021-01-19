@@ -102,7 +102,13 @@ public class MainServer {
     }
 
     public void broadcast(Player player, String command, String data) {
-        broadcast(findPlayerInfo(player), command, data);
+        PlayerInfo playerInfo = findPlayerInfo(player);
+
+        if (playerInfo == null) {
+            return;
+        }
+
+        broadcast(playerInfo, command, data);
     }
 
     private PlayerInfo findPlayerInfo(Player player) {
