@@ -1,6 +1,7 @@
 package GhostFriend.Server;
 
 import GhostFriend.Base.Game.Game;
+import GhostFriend.Base.Game.GamePhase;
 import GhostFriend.Base.Player.DealMissStatus;
 import GhostFriend.Base.Player.Player;
 import GhostFriend.Utils.Log;
@@ -49,6 +50,8 @@ public class MainServer {
                 PlayerInfo newPlayerInfo = new PlayerInfo(player, printWriter, bufferedReader);
                 playersList.add(newPlayerInfo);
             }
+
+            broadcast(player, GameParams.PHASE_CHANGE, GamePhase.toString(GamePhase.JOIN_GAME));
         }
 
         return player;
@@ -60,6 +63,7 @@ public class MainServer {
 
             synchronized (playersList) {
                 for (PlayerInfo playerInfo : playersList) {
+                    broadcast(playerInfo, GameParams.PHASE_CHANGE, GamePhase.toString(GamePhase.DISTRIBUTE_CARD));
                     broadcast(playerInfo, GameParams.DISTRIBUTE_CARDS, playerInfo.player.getCardListInfo(GameParams.DATA_DELIMITER));
                     //broadcast(playerInfo, GameParams.CHECK_DEAL_MISS, "True");
                     broadcast(playerInfo, GameParams.CHECK_DEAL_MISS, game.isDealMiss(playerInfo.player).toString());

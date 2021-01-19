@@ -22,6 +22,7 @@ public class GameParams {
     public static final String SUBMIT_CARD = "SubmitCard";
 
     // Send Commands
+    public static final String PHASE_CHANGE = "PhaseChange";
     public static final String JOIN_FAIL = "JoinFail";
     public static final String JOIN_NEW_PLAYER = "JoinNewPlayer";
     public static final String EXIT_PLAYER = "ExitPlayer";
