@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="GhostFriend:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/GhostFriend_jar</output-path>
-    <root id="archive" name="GhostFriend.jar">
-      <element id="module-output" name="GhostFriend" />
-    </root>
-  </artifact>
-</component>
