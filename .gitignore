@@ -1,3 +1,6 @@
+# Ignore all editor configuration files
+.idea/
+
 
 # Created by https://www.toptal.com/developers/gitignore/api/java,intellij+iml
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,intellij+iml
