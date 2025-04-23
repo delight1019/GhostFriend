@@ -1,88 +1,130 @@
 package GhostFriend.Base.Game;
 
 import GhostFriend.Base.Card.Card;
+import GhostFriend.Base.Card.CardSuit;
+import GhostFriend.Base.Event.GameEventBus;
+import GhostFriend.Base.Event.GameEvents;
+import GhostFriend.Base.Event.EventType;
 import GhostFriend.Base.Player.Player;
 import GhostFriend.Base.Rule.Rule;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameController {
-    private List<Player> players;
-    private Rule rule;
-    private Player declarer;
-    private Player friend;
+    private final List<Player> players;
+    private final Rule rule;
+    private final Player declarer;
+    private final Player friend;
+    private final List<Card> submittedCards;
     private Player currentPlayer;
-    private Player winner;
-    private int currentPhaseScore;
-
-    public Player getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    public void setNextPlayer(Player submittedPlayer) {
-        int submittedIndex = players.indexOf(submittedPlayer);
-        int nextPlayerIndex = submittedIndex + 1;
-
-        if (nextPlayerIndex == players.size()) {
-            nextPlayerIndex = 0;
-        }
-
-        currentPlayer = players.get(nextPlayerIndex);
-    }
-
-    public void submitCard(Player player, Card card) {
-        player.submitCard(card);
-        setWinner(player);
-
-        currentPhaseScore += rule.getScore(player.getSubmittedCard());
-
-        setNextPlayer(player);
-    }
-
-    private void setWinner(Player player) {
-        if (rule.isWinnerCard(winner.getSubmittedCard(), player.getSubmittedCard())) {
-            winner = player;
-        }
-    }
-
-    public boolean isPhaseFinished() {
-        boolean isFinished = true;
-
-        for (Player player : players) {
-            isFinished = isFinished & (player.isSubmitted());
-        }
-
-        return isFinished;
-    }
-
-    public Player getWinner() {
-        return winner;
-    }
-
-    public int getPhaseScore() {
-        return currentPhaseScore;
-    }
-
-    public boolean isAllPhaseFinished() {
-        return (winner.getCardList().isEmpty());
-    }
-
-    public void clearPhase() {
-        currentPlayer = winner;
-        currentPhaseScore = 0;
-
-        for (Player player : players) {
-            player.clearSubmission();
-        }
-    }
+    private int currentTrick;
+    private GameEventBus eventBus;
 
     public GameController(List<Player> players, Rule rule, Player declarer, Player friend) {
         this.players = players;
         this.rule = rule;
         this.declarer = declarer;
         this.friend = friend;
+        this.submittedCards = new ArrayList<>();
         this.currentPlayer = declarer;
-        this.winner = declarer;
-        this.currentPhaseScore = 0;
+        this.currentTrick = 0;
+        this.eventBus = new GameEventBus();
+    }
+
+    public GameEventBus getEventBus() {
+        return eventBus;
+    }
+
+    public void setEventBus(GameEventBus eventBus) {
+        this.eventBus = eventBus;
+    }
+
+    public boolean submitCard(Player player, Card card) {
+        if (player != currentPlayer) {
+            return false;
+        }
+
+        if (!isValidCard(player, card)) {
+            return false;
+        }
+
+        submittedCards.add(card);
+        player.removeCard(card);
+        eventBus.publish(GameEvents.cardSubmitted(player, card));
+
+        if (submittedCards.size() == players.size()) {
+            Player winner = determineWinner();
+            winner.increaseScore(calculateTrickScore());
+            eventBus.publish(GameEvents.trickCompleted(winner, submittedCards));
+            
+            submittedCards.clear();
+            currentTrick++;
+            
+            if (currentTrick >= 13) {
+                eventBus.publish(GameEvents.gamePhaseChanged(EventType.END_GAME.getValue()));
+                return true;
+            }
+            
+            currentPlayer = winner;
+        } else {
+            currentPlayer = getNextPlayer();
+        }
+
+        return true;
+    }
+
+    private boolean isValidCard(Player player, Card card) {
+        if (submittedCards.isEmpty()) {
+            return true;
+        }
+
+        CardSuit leadSuit = submittedCards.get(0).getSuit();
+        boolean hasLeadSuit = false;
+
+        for (Card playerCard : player.getCards()) {
+            if (playerCard.getSuit() == leadSuit) {
+                hasLeadSuit = true;
+                break;
+            }
+        }
+
+        return !hasLeadSuit || card.getSuit() == leadSuit;
+    }
+
+    private Player determineWinner() {
+        Card winningCard = submittedCards.get(0);
+        Player winner = players.get(0);
+
+        for (int i = 1; i < submittedCards.size(); i++) {
+            Card currentCard = submittedCards.get(i);
+            if (rule.isHigherCard(currentCard, winningCard)) {
+                winningCard = currentCard;
+                winner = players.get(i);
+            }
+        }
+
+        return winner;
+    }
+
+    private int calculateTrickScore() {
+        int score = 0;
+        for (Card card : submittedCards) {
+            score += rule.getCardScore(card);
+        }
+        return score;
+    }
+
+    private Player getNextPlayer() {
+        int currentIndex = players.indexOf(currentPlayer);
+        return players.get((currentIndex + 1) % players.size());
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public boolean isGameEnd() {
+        return currentTrick >= 13;
     }
 }

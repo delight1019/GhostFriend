@@ -4,6 +4,9 @@ import GhostFriend.Base.Card.Card;
 import GhostFriend.Base.Card.CardSuit;
 import GhostFriend.Base.Card.CardValue;
 import GhostFriend.Base.Deck.Deck;
+import GhostFriend.Base.Event.GameEventBus;
+import GhostFriend.Base.Event.GameEvents;
+import GhostFriend.Base.Event.EventType;
 import GhostFriend.Base.Player.DealMissStatus;
 import GhostFriend.Base.Player.Player;
 import GhostFriend.Base.Rule.Rule;
@@ -25,6 +28,7 @@ public class Game {
     private int numOfPlayers;
     private ContractDeclarator contractDeclarator;
     private GameController gameController;
+    private GameEventBus eventBus;
 
     public Game() {
         rule = new Rule();
@@ -33,6 +37,15 @@ public class Game {
         declarer = new Player("Declarer");
         friend = null;
         this.numOfPlayers = 0;
+        this.eventBus = new GameEventBus();
+    }
+
+    public GameEventBus getEventBus() {
+        return eventBus;
+    }
+
+    public void setEventBus(GameEventBus eventBus) {
+        this.eventBus = eventBus;
     }
 
     public boolean isAllPlayersEntered() {
@@ -83,16 +96,11 @@ public class Game {
         return DealMissStatus.OK;
     }
 
-    public Player addPlayer(String name) {
-        synchronized (players) {
-            if (players.size() >= PLAYER_NUMBER) {
-                return null;
-            } else {
-                Player player = new Player(name);
-                players.add(player);
-
-                return player;
-            }
+    public void addPlayer(Player player) {
+        if (numOfPlayers < PLAYER_NUMBER) {
+            players.add(player);
+            numOfPlayers++;
+            eventBus.publish(GameEvents.playerJoined(player));
         }
     }
 
@@ -103,18 +111,18 @@ public class Game {
     }
 
     public void distributeCards() {
-        synchronized (players) {
-            for (Player player : players) {
-                for (int i = 0; i < Rule.getNumOfCardsPerPerson(); i++) {
-                    player.receiveCard(deck.draw());
-                }
-            }
+        deck.shuffle();
+        for (Player player : players) {
+            List<Card> playerCards = deck.drawCards(13);
+            player.setCards(playerCards);
         }
+        eventBus.publish(GameEvents.gamePhaseChanged(EventType.DISTRIBUTE_CARD.getValue()));
     }
 
     public void startContractDeclaration() {
         contractDeclarator = new ContractDeclarator(rule, players);
         askContractDeclaring();
+        eventBus.publish(GameEvents.gamePhaseChanged(EventType.DECLARE_CONTRACT.getValue()));
     }
 
     public void passContractDeclaration(Player player) {
@@ -145,15 +153,11 @@ public class Game {
         }
     }
 
-    public void declareContract(Player player, String contractData) {
-        String[] contractInfo = contractData.split(GameParams.DATA_DELIMITER);
-        contractDeclarator.declare(player, CardSuit.convertString(contractInfo[0]), Integer.parseInt(contractInfo[1]));
-
-        if (contractDeclarator.isFinished()) {
-            confirmDeclarer(contractDeclarator.getCurrentDeclarer());
-            confirmDeclarerCards();
-        } else {
-            askContractDeclaring();
+    public void declareContract(Player player, CardSuit suit, CardValue value) {
+        if (contractDeclarator.declareContract(player, suit, value)) {
+            eventBus.publish(GameEvents.contractDeclared(player, suit, value));
+            startGamePlay();
+            eventBus.publish(GameEvents.gamePhaseChanged(EventType.PLAY_GAME.getValue()));
         }
     }
 
@@ -245,34 +249,12 @@ public class Game {
         MainServer.getInstance().broadcast(gameController.getCurrentPlayer(), GameParams.ASK_CARD, "");
     }
 
-    public void submitCard(Player player, String cardData) {
-        String[] cardInfo = cardData.split(GameParams.DATA_DELIMITER);
-        Card submittedCard = new Card(CardSuit.convertString(cardInfo[0]), CardValue.convertString(cardInfo[1]));
-
-        gameController.submitCard(player, submittedCard);
-
-        MainServer.getInstance().broadcast(player, GameParams.UPDATE_CARD_LIST, player.getCardListInfo(GameParams.DATA_DELIMITER));
-
-        BroadcastCardSubmission(player.getName(), submittedCard);
-
-        if (gameController.isPhaseFinished()) {
-            Player winner = gameController.getWinner();
-            Integer phaseScore = gameController.getPhaseScore();
-
-            winner.increaseScore(phaseScore);
-
-            MainServer.getInstance().broadcast(GameParams.NOTIFY_PHASE_WINNER, winner.getName() + GameParams.DATA_DELIMITER + phaseScore.toString());
-
-            if (gameController.isAllPhaseFinished()) {
-                NotifyGameWinner();
+    public void submitCard(Player player, Card card) {
+        if (gameController.submitCard(player, card)) {
+            eventBus.publish(GameEvents.cardSubmitted(player, card));
+            if (gameController.isGameEnd()) {
+                eventBus.publish(GameEvents.gamePhaseChanged(EventType.END_GAME.getValue()));
             }
-            else {
-                gameController.clearPhase();
-                MainServer.getInstance().broadcast(gameController.getCurrentPlayer(), GameParams.ASK_CARD, "");
-            }
-        }
-        else {
-            MainServer.getInstance().broadcast(gameController.getCurrentPlayer(), GameParams.ASK_CARD, "");
         }
     }
 
@@ -291,5 +273,17 @@ public class Game {
         else {
             MainServer.getInstance().broadcast(GameParams.NOTIFY_GAME_WINNER, GameParams.DECLARER_LOSE + GameParams.DATA_DELIMITER + friend.getName());
         }
+    }
+
+    public void startGame() {
+        eventBus.publish(GameEvents.gamePhaseChanged(EventType.JOIN_GAME.getValue()));
+        distributeCards();
+        eventBus.publish(GameEvents.gamePhaseChanged(EventType.DISTRIBUTE_CARD.getValue()));
+        startContractDeclaration();
+        eventBus.publish(GameEvents.gamePhaseChanged(EventType.DECLARE_CONTRACT.getValue()));
+    }
+
+    private void startGamePlay() {
+        // Implementation of startGamePlay method
     }
 }
