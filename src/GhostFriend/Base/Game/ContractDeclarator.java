@@ -1,6 +1,10 @@
 package GhostFriend.Base.Game;
 
 import GhostFriend.Base.Card.CardSuit;
+import GhostFriend.Base.Card.CardValue;
+import GhostFriend.Base.Event.GameEventBus;
+import GhostFriend.Base.Event.GameEvents;
+import GhostFriend.Base.Event.EventType;
 import GhostFriend.Base.Player.Player;
 import GhostFriend.Base.Rule.Rule;
 import GhostFriend.Server.GameParams;
@@ -13,6 +17,9 @@ public class ContractDeclarator {
     private Player currentDeclarer;
     private int declaringIndex;
     private int passNum;
+    private GameEventBus eventBus;
+    private int currentContractScore;
+    private CardSuit currentContractSuit;
 
     private void initialize() {
         declaringIndex = 0;
@@ -41,18 +48,30 @@ public class ContractDeclarator {
     }
 
     public void passDeclaration(Player player) {
-        player.passContractDeclaration();
+        if (player != currentDeclarer) {
+            return;
+        }
 
-        increasePassNum();
-        setNextPlayer();
+        eventBus.publish(GameEvents.contractPassed(player));
+        moveToNextPlayer();
     }
 
-    public void declare(Player player, CardSuit giru, Integer score) {
-        player.declareContract(giru, score);
-        currentDeclarer = player;
+    public boolean declareContract(Player player, CardSuit suit, CardValue value) {
+        if (player != currentDeclarer) {
+            return false;
+        }
 
-        passNum = 0;
-        setNextPlayer();
+        int score = value.getValue();
+        if (score < currentContractScore) {
+            return false;
+        }
+
+        currentContractScore = score;
+        currentContractSuit = suit;
+        eventBus.publish(GameEvents.contractDeclared(player, suit, value));
+
+        moveToNextPlayer();
+        return true;
     }
 
     public Boolean isFinished() {
@@ -80,10 +99,22 @@ public class ContractDeclarator {
         }
     }
 
-    public ContractDeclarator(Rule rule, List<Player> players) {
+    private void moveToNextPlayer() {
+        int currentIndex = players.indexOf(currentDeclarer);
+        currentDeclarer = players.get((currentIndex + 1) % players.size());
+
+        if (currentDeclarer == players.get(0)) {
+            eventBus.publish(GameEvents.contractDeclarationFinished());
+        } else {
+            eventBus.publish(GameEvents.nextContractDeclarer(currentDeclarer));
+        }
+    }
+
+    public ContractDeclarator(Rule rule, List<Player> players, GameEventBus eventBus) {
         this.rule = rule;
         this.players = players;
         this.currentDeclarer = null;
+        this.eventBus = eventBus;
         initialize();
     }
 }
